@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=1440"/>
+<title>xPerion · WealthAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:'Inter',sans-serif;background:#F4F5F7;overflow-x:hidden}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,97,60,.25)}50%{box-shadow:0 0 0 8px rgba(232,97,60,0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes flowDash{to{stroke-dashoffset:-12}}
+.fu{animation:fadeUp .55s cubic-bezier(.22,1,.36,1) both}
+.fi{animation:fadeIn .5s ease both}
+.si{animation:slideIn .5s cubic-bezier(.22,1,.36,1) both}
+.hover-lift{transition:transform .22s,box-shadow .22s}
+.hover-lift:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.10),0 2px 6px rgba(0,0,0,.05)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#D1D5DB;border-radius:6px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+/* ═══════════════════ DESIGN TOKENS ═══════════════════ */
+const X = {
+  coral:"#E8613C", coralB:"#FEF0EB",
+  cyan:"#06B6D4", cyanB:"#ECFEFF",
+  purple:"#8B5CF6", purpleB:"#F5F3FF",
+  blue:"#3B82F6", blueB:"#EFF6FF",
+  amber:"#F59E0B", amberB:"#FFFBEB",
+  pink:"#EC4899", pinkB:"#FDF2F8",
+  green:"#10B981", greenB:"#ECFDF5",
+  orange:"#F97316", orangeB:"#FFF7ED",
+  red:"#EF4444", redB:"#FEF2F2",
+  teal:"#14B8A6", tealB:"#F0FDFA",
+  t1:"#111827", t2:"#6B7280", t3:"#9CA3AF",
+  bg:"#F4F5F7", card:"#FFFFFF", surf:"#F9FAFB",
+  bdr:"#E5E7EB", bdr2:"#D1D5DB",
+  sh:"0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04)",
+  shH:"0 4px 14px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04)",
+};
+const mono="'JetBrains Mono',monospace";
+
+/* ═══════════════════ PIPELINE DATA ═══════════════════ */
+const PIPELINE = [
+  {
+    id:"ingest", agent:"Data Ingestion & Integration Agent", label:"Data Ingestion\n& Integration", icon:"📡",
+    color:X.cyan, bg:X.cyanB,
+    diff:"Pre-Built Connectors (Core Banking, Cards, CRM, Open Banking APIs)",
+    kpi:"Customer 360 View",
+    desc:"Ingests client data from core banking, cards, CRM, and open banking APIs into a unified customer 360 view — supporting real-time streaming and batch syncs across all wealth data sources."
+  },
+  {
+    id:"model", agent:"AI Data Modeling Agent", label:"AI Data\nModeling", icon:"🧠",
+    color:X.purple, bg:X.purpleB,
+    diff:"Pre-Built Custom Behavior & Goals Schema (Balances, Risk Profile, Life Events)",
+    kpi:"60% Less Data Modeling",
+    desc:"Builds pre-built custom behavior and goals schemas covering balances, risk profiles, and life events — reducing data modeling time by 60% with intelligent schema auto-generation."
+  },
+  {
+    id:"identity", agent:"Identity Stitching Agent", label:"Identity\nStitching", icon:"🔗",
+    color:X.blue, bg:X.blueB,
+    diff:"Auto Mapping of Identities Using Industry-Specific IDs",
+    kpi:"40% More Accurate",
+    desc:"Automatically maps and resolves customer identities across systems using industry-specific IDs — delivering 40% more accurate targeting through unified identity graphs."
+  },
+  {
+    id:"predict", agent:"Predictive & Propensity Modeling Agent", label:"Predictive &\nPropensity", icon:"📈",
+    color:X.amber, bg:X.amberB,
+    diff:"AI Models for Investment, Churn and Conversion",
+    kpi:"Needs-Based Journeys",
+    desc:"Deploys AI models purpose-built for investment propensity, churn prediction, and conversion optimization — powering needs-based customer journeys at scale."
+  },
+  {
+    id:"personalize", agent:"1:1 Personalization Through GenAI Agent", label:"1:1 Personal-\nization GenAI", icon:"🎯",
+    color:X.pink, bg:X.pinkB,
+    diff:"AI-Driven Micro-Segments (Investment-Ready, High-Value Savers)",
+    kpi:"Needs-Based Journeys",
+    desc:"Creates AI-driven micro-segments like Investment-Ready, High-Value Savers, and At-Risk Wealth clients — delivering hyper-personalized experiences through GenAI."
+  },
+  {
+    id:"creative", agent:"AI Generated Creative & Content Agent", label:"AI Generated\nCreative", icon:"✨",
+    color:X.green, bg:X.greenB,
+    diff:"AI Generated Curated Content",
+    kpi:"60% Faster Content",
+    desc:"Generates curated, compliant creative content tailored to each wealth segment — producing personalized ads, emails, and landing pages 60% faster than manual workflows."
+  },
+  {
+    id:"activate", agent:"Omnichannel Activation Agent", label:"Omnichannel\nActivation", icon:"📢",
+    color:X.orange, bg:X.orangeB,
+    diff:"100% Channel Coverage",
+    kpi:"Full Channel Reach",
+    desc:"Activates personalized experiences across every channel — website, call centre, notifications, branch, SMS, email, social media, and offline — with 100% coverage."
+  },
+  {
+    id:"measure", agent:"Continuous Measurement & Optimization Agent", label:"Measurement\n& Optimization", icon:"📊",
+    color:X.teal, bg:X.tealB,
+    diff:"AI-Based Insights on Revenue/AUM, Conversions for Continuous Optimization",
+    kpi:"Faster Feedback Loop",
+    desc:"Delivers AI-based insights on revenue, AUM growth, and conversion metrics — creating a continuous optimization feedback loop that improves performance in real time."
+  },
+];
+
+const KPIS = [
+  { stat:"60%", label:"Less time on data modeling", color:X.purple },
+  { stat:"40%", label:"More accurate targeting", color:X.blue },
+  { stat:"3×", label:"Faster creative iteration", color:X.green },
+  { stat:"+20%", label:"Engagement via better copy", color:X.pink },
+  { stat:"50%", label:"Faster A/B decisions", color:X.amber },
+  { stat:"5", label:"Evaluation dimensions", color:X.teal },
+];
+
+const CHANNELS = [
+  { icon:"\uD83D\uDDA5\uFE0F", name:"Website" },
+  { icon:"\uD83D\uDCDE", name:"Call Centre" },
+  { icon:"\uD83D\uDD14", name:"Notifications" },
+  { icon:"\uD83C\uDFE6", name:"Branch" },
+  { icon:"\uD83D\uDCAC", name:"SMS" },
+  { icon:"\u2709\uFE0F", name:"Email" },
+  { icon:"\uD83D\uDCF1", name:"Social Media" },
+  { icon:"\uD83D\uDCC4", name:"Offline" },
+];
+
+const OUTCOMES = [
+  { stat:"+2–3%", label:"AUM Growth", color:X.green },
+  { stat:"+15–20%", label:"Lift in Digital Conversions", color:X.blue },
+  { stat:"-25%", label:"Cost to Serve", color:X.coral },
+];
+
+const USE_CASES = [
+  {
+    id:"wealth-accumulation",
+    title:"Wealth Accumulation Campaign",
+    subtitle:"Target high-potential savers with personalized investment offers based on behavioral signals",
+    icon:"\uD83D\uDCB0", color:X.green, bg:X.greenB,
+    client:{ name:"Sarah Chen", tier:"Mass Affluent", hub:"Digital-First", aum:"$420K", riskProfile:"Moderate Growth", age:"38" },
+    trigger:{ title:"Investment Readiness Signal Detected", signals:[
+      { s:"Core Banking", e:"Savings balance exceeded $50K threshold", sev:"high" },
+      { s:"Behavioral Model", e:"Investment research page visits +340%", sev:"critical" },
+      { s:"Life Events", e:"Recent promotion detected via income increase", sev:"medium" },
+    ]},
+    offer:{ headline:"Your Wealth, Accelerated", action:"Start your personalized investment journey with a complimentary portfolio review", cta:"Book Portfolio Review", benefit:"Fee waiver on first $100K AUM" },
+    result:{ before:"12%", after:"34%", metric:"conversion rate" },
+    steps:[
+      { t:"Ingest client 360 data from core banking, cards, CRM", d:{ source:"Core Banking + CRM + Cards", records:"1 unified profile", latency:"<200ms", schema:"Wealth-360" }},
+      { t:"Build behavior & goals schema for mass affluent segment", d:{ segment:"Mass Affluent", riskProfile:"Moderate Growth", lifeStage:"Career Peak", savingsVelocity:"+$3.2K/mo" }},
+      { t:"Resolve identity across digital and branch interactions", d:{ matchedIDs:4, channels:"Web + App + Branch + Call", confidence:"97.3%", idGraph:"Unified" }},
+      { t:"Score investment propensity and conversion likelihood", d:{ investmentPropensity:"0.84", churnRisk:"0.12", conversionLikelihood:"0.71", model:"WealthPropensity-v3" }},
+      { t:"Generate micro-segment: Investment-Ready High Saver", d:{ microSegment:"Investment-Ready", subCluster:"High-Velocity Saver", personaMatch:"92%", journeyType:"Needs-Based" }},
+      { t:"Create personalized investment content for segment", d:{ variants:3, tone:"Aspirational + Trust", compliance:"Pre-cleared", format:"Email + Landing Page" }},
+      { t:"Activate across website, email, branch, and notifications", d:{ channels:4, timing:"Next best moment", priority:"High", abTest:"3-variant" }},
+      { t:"Measure AUM impact and optimize conversion funnel", d:{ aumLift:"+$42K", conversionRate:"34%", costPerAcquisition:"-28%", nextAction:"Scale to segment" }},
+    ]
+  },
+  {
+    id:"churn-prevention",
+    title:"Wealth Client Retention",
+    subtitle:"Identify at-risk high-value clients and intervene with personalized retention strategies",
+    icon:"\uD83D\uDEE1\uFE0F", color:X.coral, bg:X.coralB,
+    client:{ name:"James Morton", tier:"HNWI", hub:"Relationship-Led", aum:"$2.1M", riskProfile:"Conservative", age:"56" },
+    trigger:{ title:"Attrition Risk Alert — High Value Client", signals:[
+      { s:"Behavioral Model", e:"Portfolio review engagement dropped 65%", sev:"critical" },
+      { s:"Core Banking", e:"Outbound transfer of $180K to competitor", sev:"critical" },
+      { s:"CRM", e:"Missed last 2 scheduled advisor meetings", sev:"high" },
+    ]},
+    offer:{ headline:"Your Dedicated Wealth Review", action:"Exclusive portfolio health check with your senior advisor — plus preferred pricing on managed accounts", cta:"Schedule Review", benefit:"0.15% fee reduction on AUM" },
+    result:{ before:"72%", after:"18%", metric:"churn probability" },
+    steps:[
+      { t:"Ingest real-time transaction and engagement signals", d:{ source:"Core Banking + CRM + Digital", alerts:3, latency:"Real-time", priority:"Critical" }},
+      { t:"Update risk profile and behavioral anomaly flags", d:{ segment:"HNWI", riskChange:"Conservative to Defensive", anomalyScore:"0.89", trigger:"Outbound transfers" }},
+      { t:"Stitch identity across advisor, digital, and call channels", d:{ matchedIDs:5, advisorID:"WM-4421", lastBranchVisit:"47 days ago", preferredChannel:"Phone" }},
+      { t:"Predict churn probability and lifetime value at risk", d:{ churnProbability:"0.72", ltvAtRisk:"$840K", retentionWindow:"14 days", modelConfidence:"94%" }},
+      { t:"Assign to 1:1 retention journey with personalized triggers", d:{ journeyType:"High-Touch Retention", microSegment:"At-Risk HNWI", escalation:"Advisor Alert", urgency:"Immediate" }},
+      { t:"Generate tailored retention content and advisor briefing", d:{ variants:2, tone:"Reassuring + Exclusive", format:"Advisor Brief + Email", compliance:"Cleared" }},
+      { t:"Activate advisor outreach, email, and branch appointment", d:{ channels:3, advisorNotified:true, branchSlot:"Reserved", smsConfirmation:true }},
+      { t:"Track retention outcome and optimize intervention model", d:{ churnReduced:"72% to 18%", aumRetained:"$2.1M", advisorFeedback:"Positive", modelUpdate:"Scheduled" }},
+    ]
+  },
+];
+
+/* ═══════════════════ REUSABLE COMPONENTS ═══════════════════ */
+const { useState, useEffect, useRef, useCallback } = React;
+
+function Badge({ text, color=X.coral, bg, style={} }) {
+  return <span style={{ fontSize:10, fontWeight:600, padding:"2.5px 9px", borderRadius:10, background:bg||color+"14", color, letterSpacing:".03em", whiteSpace:"nowrap", ...style }}>{text}</span>;
+}
+
+function DataBlock({ entries, color }) {
+  return (
+    <div style={{ background:X.surf, borderRadius:10, padding:"10px 14px", fontFamily:mono, fontSize:10.5, lineHeight:1.9, border:"1px solid "+X.bdr }}>
+      {Object.entries(entries).map(([k,v])=>(
+        <div key={k}><span style={{ color, fontWeight:600 }}>{k}:</span>{" "}<span style={{ color:X.t2 }}>{String(v)}</span></div>
+      ))}
+    </div>
+  );
+}
+
+/* ═══════════════════ XPERION LOGO ═══════════════════ */
+function XperionLogo({ size=22 }) {
+  return (
+    <svg width={size*4.5} height={size} viewBox="0 0 180 40" fill="none">
+      <path d="M6 8L18 32M18 8L6 32" stroke="#E8613C" strokeWidth="4" strokeLinecap="round"/>
+      <text x="28" y="28" fontFamily="Inter" fontWeight="800" fontSize="22" fill="#111827">perion</text>
+    </svg>
+  );
+}
+
+/* ═══════════════════ HEADER ═══════════════════ */
+function Header() {
+  return (
+    <header style={{ position:"sticky", top:0, zIndex:100, background:"#FFFFFFEE", backdropFilter:"blur(12px)", borderBottom:"1px solid "+X.bdr, padding:"0 28px", height:52, display:"flex", alignItems:"center", justifyContent:"space-between", marginLeft:56 }}>
+      <div style={{ display:"flex", alignItems:"center", gap:14 }}>
+        <XperionLogo size={18}/>
+        <div style={{ width:1, height:22, background:X.bdr2 }}/>
+        <span style={{ fontSize:13, fontWeight:600, color:X.t1 }}>WealthAI</span>
+        <span style={{ fontSize:10, color:X.t3 }}>&rsaquo;</span>
+        <span style={{ fontSize:12, color:X.t2 }}>Industry Accelerator</span>
+      </div>
+      <div style={{ display:"flex", alignItems:"center", gap:16 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:6, padding:"5px 14px", borderRadius:8, border:"1px solid "+X.bdr, fontSize:12, color:X.t3, cursor:"pointer" }}>
+          <span>🔍</span><span>Search accelerators...</span>
+        </div>
+        <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+          <span style={{ width:8, height:8, borderRadius:"50%", background:X.green, display:"inline-block" }}></span>
+          <span style={{ fontSize:11, fontWeight:500, color:X.t2 }}>AI Engine Ready</span>
+        </div>
+        <div style={{ width:30, height:30, borderRadius:"50%", background:"linear-gradient(135deg,"+X.coral+","+X.orange+")", display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontSize:12, fontWeight:700 }}>W</div>
+      </div>
+    </header>
+  );
+}
+
+/* ═══════════════════ SIDEBAR ═══════════════════ */
+function Sidebar() {
+  const items = [
+    { icon:"\uD83C\uDFE0", label:"Home" },
+    { icon:"\uD83E\uDDE9", label:"Accelerators", active:true },
+    { icon:"\uD83E\uDD16", label:"Agents" },
+    { icon:"\uD83D\uDCCA", label:"Analytics" },
+    { icon:"\u2699\uFE0F", label:"Settings" },
+  ];
+  return (
+    <nav style={{ position:"fixed", left:0, top:0, bottom:0, width:56, background:X.card, borderRight:"1px solid "+X.bdr, display:"flex", flexDirection:"column", alignItems:"center", paddingTop:14, gap:4, zIndex:200 }}>
+      <div style={{ width:32, height:32, borderRadius:10, background:"linear-gradient(135deg,"+X.coral+","+X.orange+")", display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontSize:16, fontWeight:800, marginBottom:12 }}>X</div>
+      {items.map((it,i)=>(
+        <div key={i} title={it.label} style={{ width:40, height:40, borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, cursor:"pointer", background:it.active?X.coralB:"transparent", transition:"background .15s" }}>{it.icon}</div>
+      ))}
+    </nav>
+  );
+}
+
+/* ═══════════════════ HERO ═══════════════════ */
+function Hero() {
+  return (
+    <section className="fu" style={{ margin:"0 24px", padding:"44px 44px 40px", background:"linear-gradient(135deg, #1E1040 0%, #3B1858 35%, #6B2A7D 65%, #E8613C 100%)", borderRadius:"0 0 18px 18px", position:"relative", overflow:"hidden" }}>
+      <div style={{ position:"absolute", top:0, right:0, width:400, height:400, background:"radial-gradient(circle, rgba(232,97,60,.18) 0%, transparent 70%)", pointerEvents:"none" }}/>
+      <div style={{ display:"flex", gap:40, alignItems:"flex-start" }}>
+        <div style={{ flex:1, zIndex:1 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
+            <span style={{ fontSize:26, fontWeight:800, color:"#fff", letterSpacing:"-.02em" }}>WealthAI</span>
+            <Badge text="Accelerator" color="#fff" bg="rgba(255,255,255,.18)" style={{ fontSize:10.5, fontWeight:600 }}/>
+          </div>
+          <div style={{ fontSize:12, color:"rgba(255,255,255,.6)", marginBottom:20, letterSpacing:".04em" }}>Industry Accelerator &middot; Banking &amp; Wealth Management</div>
+          <h1 style={{ fontSize:32, fontWeight:800, color:"#fff", lineHeight:1.2, marginBottom:18, maxWidth:540, letterSpacing:"-.02em" }}>AI-Powered Real-Time Personalization for Banking &amp; Wealth</h1>
+          <p style={{ fontSize:14, color:"rgba(255,255,255,.75)", lineHeight:1.7, maxWidth:520, marginBottom:28 }}>
+            WealthAI is a pre-built AI accelerator within the Xperion Marketplace. It transforms raw CDP segment data into synthetic wealth personas, then evaluates your creative across five dimensions — delivering resonance scores, rewrite suggestions, and qualitative reasoning in minutes, not weeks.
+          </p>
+          <div style={{ display:"flex", gap:12 }}>
+            <button className="hover-lift" style={{ padding:"11px 26px", borderRadius:10, border:"none", background:"#fff", color:X.t1, fontSize:13, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", gap:6 }}>Launch Studio <span style={{ fontSize:14 }}>&rarr;</span></button>
+            <button className="hover-lift" style={{ padding:"11px 26px", borderRadius:10, border:"1px solid rgba(255,255,255,.3)", background:"rgba(255,255,255,.08)", color:"#fff", fontSize:13, fontWeight:600, cursor:"pointer", backdropFilter:"blur(6px)", display:"flex", alignItems:"center", gap:6 }}>Learn More <span style={{ fontSize:14 }}>&darr;</span></button>
+          </div>
+        </div>
+        {/* Resonance Heatmap Card */}
+        <div className="fu" style={{ animationDelay:".15s", width:320, background:"#fff", borderRadius:14, padding:"18px 20px", boxShadow:"0 8px 32px rgba(0,0,0,.18)", zIndex:1 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:14 }}>
+            <span style={{ width:10, height:10, borderRadius:"50%", background:"#EF4444" }}/>
+            <span style={{ width:10, height:10, borderRadius:"50%", background:"#F59E0B" }}/>
+            <span style={{ width:10, height:10, borderRadius:"50%", background:"#10B981" }}/>
+          </div>
+          <div style={{ fontSize:10, fontWeight:700, color:X.t1, letterSpacing:".06em", marginBottom:10, textTransform:"uppercase" }}>Resonance Heatmap</div>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:6, marginBottom:14 }}>
+            {[8,7,5,3,6,9,7,5].map((v,i)=>(
+              <div key={i} style={{ height:34, borderRadius:8, background:v>=7?X.green+"20":v>=5?X.amber+"20":X.red+"20", display:"flex", alignItems:"center", justifyContent:"center", fontSize:15, fontWeight:700, color:v>=7?X.green:v>=5?X.amber:X.red }}>{v}</div>
+            ))}
+          </div>
+          <div style={{ background:X.coralB, borderRadius:8, padding:"8px 12px", marginBottom:10, borderLeft:"3px solid "+X.coral }}>
+            <div style={{ fontSize:9, fontWeight:700, color:X.coral, letterSpacing:".05em", textTransform:"uppercase", marginBottom:3 }}>First Reaction</div>
+            <div style={{ fontSize:11, color:X.t1, lineHeight:1.4, fontStyle:"italic" }}>"This feels authentic — I'd actually stop scrolling for this..."</div>
+          </div>
+          <div style={{ display:"flex", gap:8 }}>
+            <div style={{ flex:1, background:X.greenB, borderRadius:8, padding:"6px 10px" }}>
+              <div style={{ fontSize:8, fontWeight:700, color:X.green, letterSpacing:".05em", textTransform:"uppercase" }}>Works</div>
+              <div style={{ fontSize:10, color:X.t2, marginTop:2 }}>Transparent tone</div>
+            </div>
+            <div style={{ flex:1, background:X.redB, borderRadius:8, padding:"6px 10px" }}>
+              <div style={{ fontSize:8, fontWeight:700, color:X.red, letterSpacing:".05em", textTransform:"uppercase" }}>Doesn't</div>
+              <div style={{ fontSize:10, color:X.t2, marginTop:2 }}>Missing proof</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════ KPI STRIP ═══════════════════ */
+function KpiStrip() {
+  return (
+    <section className="fu" style={{ animationDelay:".1s", margin:"24px 24px 0", display:"grid", gridTemplateColumns:"repeat("+KPIS.length+",1fr)", gap:14 }}>
+      {KPIS.map((k,i)=>(
+        <div key={i} className="hover-lift" style={{ background:X.card, borderRadius:14, padding:"18px 16px", textAlign:"center", border:"1px solid "+X.bdr, boxShadow:X.sh, cursor:"default" }}>
+          <div style={{ fontSize:28, fontWeight:800, color:k.color, fontFamily:mono, letterSpacing:"-.02em" }}>{k.stat}</div>
+          <div style={{ fontSize:11, color:X.t2, marginTop:4, lineHeight:1.3 }}>{k.label}</div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+/* ═══════════════════ ARCHITECTURE DIAGRAM ═══════════════════ */
+function ArchDiagram({ active, setActive }) {
+  const W=1000, H=320, nodeW=108, nodeH=76, gap=8;
+  const n=PIPELINE.length;
+  const totalW=n*nodeW+(n-1)*gap;
+  const startX=(W-totalW)/2;
+  const nodeY=55;
+  const kpiY=nodeY+nodeH+38;
+
+  function nx(i){ return startX+i*(nodeW+gap); }
+
+  return (
+    <section className="fu" style={{ animationDelay:".15s", margin:"24px 24px 0", background:X.card, borderRadius:18, border:"1px solid "+X.bdr, boxShadow:X.sh, padding:"28px 32px 20px" }}>
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
+        <div>
+          <div style={{ fontSize:9, fontWeight:700, color:X.coral, letterSpacing:".08em", textTransform:"uppercase", marginBottom:4 }}>Architecture</div>
+          <div style={{ fontSize:17, fontWeight:700, color:X.t1 }}>WealthAI Pipeline — {PIPELINE.length} Autonomous Agents</div>
+        </div>
+        {active!==null && <button onClick={()=>setActive(null)} style={{ fontSize:11, color:X.t3, background:"none", border:"1px solid "+X.bdr, borderRadius:8, padding:"4px 12px", cursor:"pointer" }}>Clear selection &times;</button>}
+      </div>
+
+      <svg viewBox={"0 0 "+W+" "+H} style={{ width:"100%", display:"block" }}>
+        <text x={W/2} y={20} textAnchor="middle" fontSize="7.5" fontWeight="700" fill={X.t3} letterSpacing=".12em" fontFamily="Inter">PIPELINE — {PIPELINE.length} AUTONOMOUS AGENTS</text>
+
+        {PIPELINE.slice(0,-1).map((_,i)=>{
+          const x1=nx(i)+nodeW, x2=nx(i+1), cy=nodeY+nodeH/2;
+          return <g key={"line"+i}><line x1={x1} y1={cy} x2={x2} y2={cy} stroke={X.bdr2} strokeWidth="1.5" strokeDasharray="4 3" style={{ animation:"flowDash 1s linear infinite" }}/><polygon points={(x2-2)+","+(cy-4)+" "+(x2+4)+","+cy+" "+(x2-2)+","+(cy+4)} fill={X.bdr2}/></g>;
+        })}
+
+        {PIPELINE.map((p,i)=>{
+          const x=nx(i), isAct=active===i;
+          return (
+            <g key={p.id} onClick={()=>setActive(isAct?null:i)} style={{ cursor:"pointer" }}>
+              <rect x={x} y={nodeY} width={nodeW} height={nodeH} rx={12} fill={isAct?p.bg:X.surf} stroke={isAct?p.color:X.bdr} strokeWidth={isAct?2:1}/>
+              {isAct && <rect x={x-2} y={nodeY-2} width={nodeW+4} height={nodeH+4} rx={14} fill="none" stroke={p.color} strokeWidth="1" opacity=".3"/>}
+              <text x={x+nodeW/2} y={nodeY+22} textAnchor="middle" fontSize="15">{p.icon}</text>
+              {p.label.split("\n").map((ln,li)=>(
+                <text key={li} x={x+nodeW/2} y={nodeY+38+li*11} textAnchor="middle" fontSize="7.5" fontWeight="600" fill={X.t1} fontFamily="Inter">{ln}</text>
+              ))}
+            </g>
+          );
+        })}
+
+        {PIPELINE.map((p,i)=>{
+          const cx=nx(i)+nodeW/2;
+          return (
+            <g key={"kpi"+i}>
+              <line x1={cx} y1={nodeY+nodeH} x2={cx} y2={kpiY-6} stroke={X.bdr} strokeWidth="1" strokeDasharray="2 2"/>
+              <text x={cx} y={kpiY+4} textAnchor="middle" fontSize="6" fontWeight="600" fill={p.color} fontFamily="Inter">{p.kpi.length>25?p.kpi.slice(0,22)+"...":p.kpi}</text>
+            </g>
+          );
+        })}
+
+        <rect x={60} y={H-58} width={W-120} height={50} rx={10} fill={X.surf} stroke={X.bdr} strokeWidth="1"/>
+        <text x={W/2} y={H-42} textAnchor="middle" fontSize="7" fontWeight="700" fill={X.t3} letterSpacing=".1em" fontFamily="Inter">ACTIVATION CHANNELS</text>
+        {CHANNELS.map((ch,i)=>{
+          const chW=(W-160)/CHANNELS.length;
+          const cx=80+i*chW+chW/2;
+          return (
+            <g key={i}>
+              <text x={cx} y={H-22} textAnchor="middle" fontSize="12">{ch.icon}</text>
+              <text x={cx} y={H-11} textAnchor="middle" fontSize="5.5" fill={X.t2} fontFamily="Inter">{ch.name}</text>
+            </g>
+          );
+        })}
+      </svg>
+
+      {active!==null && (
+        <div className="fu" style={{ marginTop:16, padding:"20px 24px", background:PIPELINE[active].bg, borderRadius:14, border:"1px solid "+PIPELINE[active].color+"22", display:"flex", gap:20, alignItems:"flex-start" }}>
+          <div style={{ fontSize:32 }}>{PIPELINE[active].icon}</div>
+          <div style={{ flex:1 }}>
+            <div style={{ fontSize:15, fontWeight:700, color:X.t1, marginBottom:6 }}>{PIPELINE[active].agent}</div>
+            <div style={{ fontSize:12, color:X.t2, lineHeight:1.6, marginBottom:10 }}>{PIPELINE[active].desc}</div>
+            <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+              <Badge text={"Differentiator: "+PIPELINE[active].diff} color={PIPELINE[active].color}/>
+              <Badge text={"KPI: "+PIPELINE[active].kpi} color={X.t1} bg={X.t1+"0a"}/>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/* ═══════════════════ ABOUT + USE CASES ═══════════════════ */
+function AboutSection() {
+  return (
+    <div className="fu" style={{ animationDelay:".2s", margin:"24px 24px 0", display:"grid", gridTemplateColumns:"1fr 1fr", gap:20 }}>
+      <div style={{ background:X.card, borderRadius:18, border:"1px solid "+X.bdr, boxShadow:X.sh, padding:"28px 32px" }}>
+        <div style={{ fontSize:9, fontWeight:700, color:X.coral, letterSpacing:".08em", textTransform:"uppercase", marginBottom:8 }}>About This Accelerator</div>
+        <div style={{ fontSize:17, fontWeight:700, color:X.t1, marginBottom:12 }}>What is WealthAI?</div>
+        <p style={{ fontSize:13, color:X.t2, lineHeight:1.7, marginBottom:14 }}>WealthAI is a pre-built AI accelerator within the <strong style={{ color:X.t1 }}>Xperion Marketplace</strong> — purpose-built for banking and wealth management teams to deliver real-time personalization at scale.</p>
+        <p style={{ fontSize:13, color:X.t2, lineHeight:1.7, marginBottom:14 }}>It transforms raw CDP segment data from <strong style={{ color:X.t1 }}>your customer data platform</strong> into synthetic wealth personas, then evaluates your creative across five dimensions — returning resonance scores, rewrite suggestions, and full qualitative reasoning per persona.</p>
+        <p style={{ fontSize:13, color:X.t2, lineHeight:1.7 }}>From creative brief to predictive performance data in <strong style={{ color:X.t1 }}>minutes, not weeks</strong> — no focus groups, no production A/B tests needed.</p>
+      </div>
+      <div style={{ background:X.card, borderRadius:18, border:"1px solid "+X.bdr, boxShadow:X.sh, padding:"28px 32px" }}>
+        <div style={{ fontSize:9, fontWeight:700, color:X.coral, letterSpacing:".08em", textTransform:"uppercase", marginBottom:8 }}>Industry Use Cases</div>
+        <div style={{ fontSize:17, fontWeight:700, color:X.t1, marginBottom:16 }}>Built for Banking &amp; Wealth</div>
+        {[
+          { icon:"\uD83C\uDFE6", title:"Wealth Management", desc:"Test investment product messaging against wealth segments — Mass Affluent, HNWI, Ultra-HNWI, Near-Retirees." },
+          { icon:"\uD83D\uDCB3", title:"Retail Banking", desc:"Evaluate credit card, loan, and savings campaigns across income tiers and life-stage segments." },
+          { icon:"\uD83D\uDCF1", title:"Multi-Channel Creative", desc:"Supports Digital Ads, Email Campaigns, and Landing Pages — test the same message across all formats." },
+        ].map((uc,i)=>(
+          <div key={i} className="si" style={{ animationDelay:i*.08+"s", display:"flex", gap:12, marginBottom:i<2?16:0, alignItems:"flex-start" }}>
+            <div style={{ width:36, height:36, borderRadius:10, background:X.surf, display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, flexShrink:0, border:"1px solid "+X.bdr }}>{uc.icon}</div>
+            <div>
+              <div style={{ fontSize:13, fontWeight:700, color:X.t1, marginBottom:2 }}>{uc.title}</div>
+              <div style={{ fontSize:12, color:X.t2, lineHeight:1.5 }}>{uc.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════ OUTCOMES ═══════════════════ */
+function OutcomesStrip() {
+  return (
+    <section className="fu" style={{ animationDelay:".22s", margin:"24px 24px 0", display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:14 }}>
+      {OUTCOMES.map((o,i)=>(
+        <div key={i} className="hover-lift" style={{ background:X.card, borderRadius:14, padding:"20px 24px", border:"1px solid "+X.bdr, boxShadow:X.sh, display:"flex", alignItems:"center", gap:16, cursor:"default" }}>
+          <div style={{ fontSize:30, fontWeight:800, color:o.color, fontFamily:mono, letterSpacing:"-.02em", whiteSpace:"nowrap" }}>{o.stat}</div>
+          <div style={{ fontSize:13, color:X.t1, fontWeight:600, lineHeight:1.3 }}>{o.label}</div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+/* ═══════════════════ DEMO SYSTEM ═══════════════════ */
+function DemoSection() {
+  const [running, setRunning] = useState(null);
+  const [currentStep, setCurrentStep] = useState(-1);
+  const [stepStates, setStepStates] = useState([]);
+  const [phase, setPhase] = useState("idle");
+  const [demoTab, setDemoTab] = useState("flow");
+  const [claimed, setClaimed] = useState(false);
+
+  const runDemo = useCallback(async (ucIdx) => {
+    const uc = USE_CASES[ucIdx];
+    setRunning(ucIdx);
+    setPhase("running");
+    setDemoTab("flow");
+    setClaimed(false);
+    setCurrentStep(-1);
+    setStepStates(new Array(uc.steps.length).fill("pending"));
+    for (let i = 0; i < uc.steps.length; i++) {
+      setCurrentStep(i);
+      setStepStates(prev => { const n=[...prev]; n[i]="running"; return n; });
+      await new Promise(r => setTimeout(r, 800 + Math.random()*500));
+      setStepStates(prev => { const n=[...prev]; n[i]="done"; return n; });
+    }
+    setPhase("done");
+    setDemoTab("experience");
+  }, []);
+
+  const resetDemo = () => {
+    setRunning(null); setPhase("idle"); setCurrentStep(-1); setStepStates([]); setClaimed(false); setDemoTab("flow");
+  };
+
+  const uc = running !== null ? USE_CASES[running] : null;
+  const progress = uc ? (stepStates.filter(s=>s==="done").length / uc.steps.length)*100 : 0;
+
+  return (
+    <section className="fu" style={{ animationDelay:".25s", margin:"24px 24px 0", background:X.card, borderRadius:18, border:"1px solid "+X.bdr, boxShadow:X.sh, padding:"28px 32px" }}>
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20 }}>
+        <div>
+          <div style={{ fontSize:9, fontWeight:700, color:X.coral, letterSpacing:".08em", textTransform:"uppercase", marginBottom:4 }}>Interactive Demo</div>
+          <div style={{ fontSize:17, fontWeight:700, color:X.t1 }}>Experience WealthAI in Action</div>
+        </div>
+        {running!==null && <button onClick={resetDemo} style={{ fontSize:11, color:X.t3, background:"none", border:"1px solid "+X.bdr, borderRadius:8, padding:"5px 14px", cursor:"pointer" }}>&larr; Back to Use Cases</button>}
+      </div>
+
+      {running===null && (
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 }}>
+          {USE_CASES.map((u,i)=>(
+            <div key={u.id} className="hover-lift" style={{ border:"1px solid "+X.bdr, borderRadius:14, padding:"22px 24px", cursor:"pointer", background:X.card, transition:"border-color .2s" }}
+              onMouseEnter={e=>e.currentTarget.style.borderColor=u.color} onMouseLeave={e=>e.currentTarget.style.borderColor=X.bdr}>
+              <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10 }}>
+                <div style={{ width:38, height:38, borderRadius:10, background:u.bg, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 }}>{u.icon}</div>
+                <div>
+                  <div style={{ fontSize:14, fontWeight:700, color:X.t1 }}>{u.title}</div>
+                  <div style={{ fontSize:11, color:X.t2, lineHeight:1.4, marginTop:2 }}>{u.subtitle}</div>
+                </div>
+              </div>
+              <div style={{ display:"flex", gap:6, marginBottom:14, flexWrap:"wrap" }}>
+                <Badge text={u.client.tier} color={u.color}/>
+                <Badge text={"AUM: "+u.client.aum} color={X.t1} bg={X.surf}/>
+                <Badge text={u.client.riskProfile} color={X.t2} bg={X.surf}/>
+              </div>
+              <button onClick={()=>runDemo(i)} style={{ width:"100%", padding:"9px", borderRadius:10, border:"none", background:u.color, color:"#fff", fontSize:12, fontWeight:700, cursor:"pointer", letterSpacing:".02em" }}>Launch Demo &rarr;</button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {running!==null && uc && (
+        <div style={{ display:"grid", gridTemplateColumns:"340px 1fr", gap:20 }}>
+          <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+            <div style={{ background:uc.bg, borderRadius:12, padding:"14px 16px", border:"1px solid "+uc.color+"22" }}>
+              <div style={{ fontSize:10, fontWeight:700, color:uc.color, letterSpacing:".04em", marginBottom:8, textTransform:"uppercase" }}>{uc.trigger.title}</div>
+              {uc.trigger.signals.map((sig,i)=>(
+                <div key={i} className="si" style={{ animationDelay:i*.06+"s", display:"flex", alignItems:"center", gap:8, marginBottom:i<uc.trigger.signals.length-1?6:0 }}>
+                  <Badge text={sig.sev} color={sig.sev==="critical"?X.red:sig.sev==="high"?X.amber:X.blue} style={{ fontSize:8, padding:"1.5px 6px" }}/>
+                  <div>
+                    <div style={{ fontSize:9, color:X.t3, fontWeight:600 }}>{sig.s}</div>
+                    <div style={{ fontSize:10, color:X.t1, lineHeight:1.3 }}>{sig.e}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div style={{ background:X.surf, borderRadius:12, padding:"14px 16px", border:"1px solid "+X.bdr }}>
+              <div style={{ fontSize:10, fontWeight:700, color:X.t1, marginBottom:8, letterSpacing:".04em", textTransform:"uppercase" }}>Client Profile — 360 View</div>
+              {Object.entries(uc.client).map(([k,v])=>(
+                <div key={k} style={{ display:"flex", justifyContent:"space-between", fontSize:10.5, marginBottom:3 }}>
+                  <span style={{ color:X.t3, fontWeight:500 }}>{k.replace(/([A-Z])/g," $1").replace(/^./,s=>s.toUpperCase())}</span>
+                  <span style={{ color:X.t1, fontWeight:600, fontFamily:mono, fontSize:10 }}>{v}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ background:X.surf, borderRadius:12, padding:"14px 16px", border:"1px solid "+X.bdr, flex:1 }}>
+              <div style={{ fontSize:10, fontWeight:700, color:X.t1, marginBottom:8, letterSpacing:".04em", textTransform:"uppercase" }}>Agent Pipeline Execution</div>
+              <div style={{ height:4, borderRadius:4, background:X.bdr, marginBottom:12, overflow:"hidden" }}>
+                <div style={{ height:"100%", width:progress+"%", background:uc.color, borderRadius:4, transition:"width .3s ease" }}/>
+              </div>
+              {uc.steps.map((st,i)=>{
+                const state=stepStates[i]||"pending";
+                return (
+                  <div key={i} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:6, opacity:state==="pending"?.4:1, transition:"opacity .3s" }}>
+                    <div style={{ width:20, height:20, borderRadius:6, background:state==="done"?PIPELINE[i].color+"18":state==="running"?X.coral+"14":X.bdr, display:"flex", alignItems:"center", justifyContent:"center", fontSize:10, flexShrink:0 }}>
+                      {state==="done"?"\u2713":state==="running"?<span style={{ display:"inline-block", animation:"spin .8s linear infinite" }}>{"\u2699\uFE0F"}</span>:<span style={{ color:X.t3, fontSize:9 }}>{i+1}</span>}
+                    </div>
+                    <div style={{ fontSize:10, color:state==="done"?X.t1:X.t3, fontWeight:state==="running"?600:400, flex:1, lineHeight:1.3 }}>{st.t}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div>
+            <div style={{ display:"flex", gap:0, marginBottom:16, borderBottom:"1px solid "+X.bdr }}>
+              {[["flow","\uD83E\uDD16 Agent Flow"],["experience","\uD83D\uDCF1 Experience"],["data","\uD83D\uDCCA Data"]].map(([id,label])=>(
+                <button key={id} onClick={()=>setDemoTab(id)} style={{ fontSize:11, fontWeight:demoTab===id?700:500, color:demoTab===id?uc.color:X.t3, background:"none", border:"none", borderBottom:demoTab===id?"2px solid "+uc.color:"2px solid transparent", padding:"8px 18px", cursor:"pointer", transition:"all .15s" }}>{label}</button>
+              ))}
+            </div>
+
+            {demoTab==="flow" && (
+              <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                {PIPELINE.map((p,i)=>{
+                  const state=stepStates[i]||"pending";
+                  return (
+                    <div key={p.id} className={state!=="pending"?"si":""} style={{ display:"flex", alignItems:"center", gap:12, padding:"10px 14px", borderRadius:12, background:state==="done"?p.bg:state==="running"?X.coral+"08":X.surf, border:"1px solid "+(state==="done"?p.color+"30":X.bdr), opacity:state==="pending"?.5:1, transition:"all .3s" }}>
+                      <div style={{ fontSize:20 }}>{p.icon}</div>
+                      <div style={{ flex:1 }}>
+                        <div style={{ fontSize:11, fontWeight:700, color:X.t1 }}>{p.agent}</div>
+                        <div style={{ fontSize:9.5, color:X.t3, marginTop:2 }}>{p.diff}</div>
+                      </div>
+                      <Badge text={state==="done"?"Complete":state==="running"?"Processing...":"Pending"} color={state==="done"?p.color:state==="running"?X.coral:X.t3}/>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {demoTab==="experience" && (
+              <div className="fu" style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:16, padding:"20px 0" }}>
+                <div style={{ width:340, background:X.surf, borderRadius:16, padding:"14px 16px", border:"1px solid "+X.bdr, boxShadow:X.sh }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8 }}>
+                    <div style={{ width:24, height:24, borderRadius:6, background:"linear-gradient(135deg,"+X.coral+","+X.orange+")", display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, color:"#fff" }}>W</div>
+                    <div style={{ fontSize:10, fontWeight:600, color:X.t2 }}>WealthAI &middot; Now</div>
+                  </div>
+                  <div style={{ fontSize:12, fontWeight:700, color:X.t1, marginBottom:3 }}>{uc.offer.headline}</div>
+                  <div style={{ fontSize:11, color:X.t2, lineHeight:1.4 }}>{uc.offer.action}</div>
+                </div>
+                <div style={{ width:340, background:"linear-gradient(135deg,"+uc.color+"10,"+uc.color+"05)", borderRadius:16, padding:"22px 20px", border:"1px solid "+uc.color+"22" }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:12 }}>
+                    <span style={{ fontSize:22 }}>{uc.icon}</span>
+                    <div style={{ fontSize:14, fontWeight:700, color:X.t1 }}>{uc.offer.headline}</div>
+                  </div>
+                  <div style={{ fontSize:12, color:X.t2, lineHeight:1.6, marginBottom:14 }}>{uc.offer.action}</div>
+                  <div style={{ background:X.card, borderRadius:10, padding:"10px 14px", marginBottom:14, border:"1px solid "+X.bdr }}>
+                    <div style={{ fontSize:10, fontWeight:600, color:X.t3, textTransform:"uppercase", letterSpacing:".04em", marginBottom:4 }}>Exclusive Benefit</div>
+                    <div style={{ fontSize:12, fontWeight:700, color:uc.color }}>{uc.offer.benefit}</div>
+                  </div>
+                  <div style={{ display:"flex", gap:12, marginBottom:14 }}>
+                    <div style={{ flex:1, textAlign:"center", background:X.card, borderRadius:10, padding:"10px 8px", border:"1px solid "+X.bdr }}>
+                      <div style={{ fontSize:8, color:X.t3, fontWeight:600, textTransform:"uppercase", marginBottom:2 }}>Before</div>
+                      <div style={{ fontSize:18, fontWeight:800, color:X.red, fontFamily:mono }}>{uc.result.before}</div>
+                      <div style={{ fontSize:9, color:X.t3 }}>{uc.result.metric}</div>
+                    </div>
+                    <div style={{ flex:1, textAlign:"center", background:X.card, borderRadius:10, padding:"10px 8px", border:"1px solid "+X.bdr }}>
+                      <div style={{ fontSize:8, color:X.t3, fontWeight:600, textTransform:"uppercase", marginBottom:2 }}>After</div>
+                      <div style={{ fontSize:18, fontWeight:800, color:X.green, fontFamily:mono }}>{uc.result.after}</div>
+                      <div style={{ fontSize:9, color:X.t3 }}>{uc.result.metric}</div>
+                    </div>
+                  </div>
+                  {!claimed ? (
+                    <button onClick={()=>setClaimed(true)} style={{ width:"100%", padding:"10px", borderRadius:10, border:"none", background:uc.color, color:"#fff", fontSize:12, fontWeight:700, cursor:"pointer" }}>{uc.offer.cta} &rarr;</button>
+                  ) : (
+                    <div style={{ textAlign:"center", padding:"10px", borderRadius:10, background:X.greenB, border:"1px solid "+X.green+"22" }}>
+                      <span style={{ fontSize:16 }}>{"\u2705"}</span>
+                      <div style={{ fontSize:12, fontWeight:700, color:X.green, marginTop:2 }}>Action Confirmed</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {demoTab==="data" && (
+              <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                <div style={{ fontSize:10, fontWeight:700, color:X.t3, letterSpacing:".06em", textTransform:"uppercase", marginBottom:4 }}>Pipeline Data Flow</div>
+                {uc.steps.map((st,i)=>{
+                  const state=stepStates[i]||"pending";
+                  if(state==="pending") return null;
+                  return (
+                    <div key={i} className="si" style={{ animationDelay:i*.04+"s" }}>
+                      <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:6 }}>
+                        <span style={{ fontSize:14 }}>{PIPELINE[i].icon}</span>
+                        <span style={{ fontSize:11, fontWeight:700, color:X.t1 }}>{PIPELINE[i].agent}</span>
+                        <Badge text={"Step "+(i+1)} color={PIPELINE[i].color} style={{ fontSize:8 }}/>
+                      </div>
+                      <DataBlock entries={st.d} color={PIPELINE[i].color}/>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/* ═══════════════════ FOOTER ═══════════════════ */
+function Footer() {
+  return (
+    <footer style={{ margin:"24px 24px 24px", padding:"24px 32px", background:X.card, borderRadius:18, border:"1px solid "+X.bdr, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+      <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+        <XperionLogo size={16}/>
+        <div style={{ width:1, height:18, background:X.bdr2 }}/>
+        <div>
+          <div style={{ fontSize:12, fontWeight:700, color:X.t1 }}>WealthAI</div>
+          <div style={{ fontSize:10, color:X.t3 }}>AI-Powered Real-Time Personalization for Banking &amp; Wealth</div>
+        </div>
+      </div>
+      <div style={{ fontSize:10, color:X.t3 }}>&copy; 2026 Coforge &middot; xPerion Marketplace &middot; All rights reserved</div>
+    </footer>
+  );
+}
+
+/* ═══════════════════ APP ═══════════════════ */
+function App() {
+  const [active, setActive] = useState(null);
+  return (
+    <div style={{ minHeight:"100vh", background:X.bg }}>
+      <Sidebar/>
+      <div style={{ marginLeft:56 }}>
+        <Header/>
+        <Hero/>
+        <KpiStrip/>
+        <ArchDiagram active={active} setActive={setActive}/>
+        <AboutSection/>
+        <OutcomesStrip/>
+        <DemoSection/>
+        <Footer/>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
