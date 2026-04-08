@@ -208,56 +208,32 @@ function DataBlock({ entries, color }) {
 }
 
 /* ═══════════════════ XPERION LOGO ═══════════════════ */
-function XperionLogo({ size=22 }) {
+
+function XperionLogo({ height=22 }) {
+  const width = Math.round(height * 3.84);
   return (
-    <svg width={size*4.5} height={size} viewBox="0 0 180 40" fill="none">
-      <path d="M6 8L18 32M18 8L6 32" stroke="#E8613C" strokeWidth="4" strokeLinecap="round"/>
-      <text x="28" y="28" fontFamily="Inter" fontWeight="800" fontSize="22" fill="#111827">perion</text>
-    </svg>
+    <img
+      src="data:image/png;base64,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"
+      alt="xPerion"
+      style={{ height: height+"px", width: "auto", display:"block" }}
+    />
   );
 }
 
 /* ═══════════════════ HEADER ═══════════════════ */
 function Header() {
   return (
-    <header style={{ position:"sticky", top:0, zIndex:100, background:"#FFFFFFEE", backdropFilter:"blur(12px)", borderBottom:"1px solid "+X.bdr, padding:"0 28px", height:52, display:"flex", alignItems:"center", justifyContent:"space-between", marginLeft:56 }}>
+    <header style={{ position:"sticky", top:0, zIndex:100, background:"#FFFFFFEE", backdropFilter:"blur(12px)", borderBottom:"1px solid "+X.bdr, padding:"0 28px", height:56, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
       <div style={{ display:"flex", alignItems:"center", gap:14 }}>
-        <XperionLogo size={18}/>
+        <XperionLogo height={24}/>
         <div style={{ width:1, height:22, background:X.bdr2 }}/>
         <span style={{ fontSize:13, fontWeight:600, color:X.t1 }}>WealthAI</span>
         <span style={{ fontSize:10, color:X.t3 }}>&rsaquo;</span>
         <span style={{ fontSize:12, color:X.t2 }}>Industry Accelerator</span>
       </div>
       <div style={{ display:"flex", alignItems:"center", gap:16 }}>
-        <div style={{ display:"flex", alignItems:"center", gap:6, padding:"5px 14px", borderRadius:8, border:"1px solid "+X.bdr, fontSize:12, color:X.t3, cursor:"pointer" }}>
-          <span>🔍</span><span>Search accelerators...</span>
-        </div>
-        <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-          <span style={{ width:8, height:8, borderRadius:"50%", background:X.green, display:"inline-block" }}></span>
-          <span style={{ fontSize:11, fontWeight:500, color:X.t2 }}>AI Engine Ready</span>
-        </div>
-        <div style={{ width:30, height:30, borderRadius:"50%", background:"linear-gradient(135deg,"+X.coral+","+X.orange+")", display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontSize:12, fontWeight:700 }}>W</div>
-      </div>
+</div>
     </header>
-  );
-}
-
-/* ═══════════════════ SIDEBAR ═══════════════════ */
-function Sidebar() {
-  const items = [
-    { icon:"\uD83C\uDFE0", label:"Home" },
-    { icon:"\uD83E\uDDE9", label:"Accelerators", active:true },
-    { icon:"\uD83E\uDD16", label:"Agents" },
-    { icon:"\uD83D\uDCCA", label:"Analytics" },
-    { icon:"\u2699\uFE0F", label:"Settings" },
-  ];
-  return (
-    <nav style={{ position:"fixed", left:0, top:0, bottom:0, width:56, background:X.card, borderRight:"1px solid "+X.bdr, display:"flex", flexDirection:"column", alignItems:"center", paddingTop:14, gap:4, zIndex:200 }}>
-      <div style={{ width:32, height:32, borderRadius:10, background:"linear-gradient(135deg,"+X.coral+","+X.orange+")", display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontSize:16, fontWeight:800, marginBottom:12 }}>X</div>
-      {items.map((it,i)=>(
-        <div key={i} title={it.label} style={{ width:40, height:40, borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, cursor:"pointer", background:it.active?X.coralB:"transparent", transition:"background .15s" }}>{it.icon}</div>
-      ))}
-    </nav>
   );
 }
 
@@ -266,47 +242,88 @@ function Hero() {
   return (
     <section className="fu" style={{ margin:"0 24px", padding:"44px 44px 40px", background:"linear-gradient(135deg, #1E1040 0%, #3B1858 35%, #6B2A7D 65%, #E8613C 100%)", borderRadius:"0 0 18px 18px", position:"relative", overflow:"hidden" }}>
       <div style={{ position:"absolute", top:0, right:0, width:400, height:400, background:"radial-gradient(circle, rgba(232,97,60,.18) 0%, transparent 70%)", pointerEvents:"none" }}/>
-      <div style={{ display:"flex", gap:40, alignItems:"flex-start" }}>
+      <div style={{ display:"flex", gap:40, alignItems:"stretch" }}>
         <div style={{ flex:1, zIndex:1 }}>
           <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
             <span style={{ fontSize:26, fontWeight:800, color:"#fff", letterSpacing:"-.02em" }}>WealthAI</span>
             <Badge text="Accelerator" color="#fff" bg="rgba(255,255,255,.18)" style={{ fontSize:10.5, fontWeight:600 }}/>
           </div>
-          <div style={{ fontSize:12, color:"rgba(255,255,255,.6)", marginBottom:20, letterSpacing:".04em" }}>Industry Accelerator &middot; Banking &amp; Wealth Management</div>
-          <h1 style={{ fontSize:32, fontWeight:800, color:"#fff", lineHeight:1.2, marginBottom:18, maxWidth:540, letterSpacing:"-.02em" }}>AI-Powered Real-Time Personalization for Banking &amp; Wealth</h1>
+          <div style={{ fontSize:12, color:"rgba(255,255,255,.6)", marginBottom:20, letterSpacing:".04em" }}>Industry Accelerator · Banking & Wealth Management</div>
+          <h1 style={{ fontSize:32, fontWeight:800, color:"#fff", lineHeight:1.2, marginBottom:18, maxWidth:540, letterSpacing:"-.02em" }}>AI-Powered Real-Time Personalization for Banking & Wealth</h1>
           <p style={{ fontSize:14, color:"rgba(255,255,255,.75)", lineHeight:1.7, maxWidth:520, marginBottom:28 }}>
-            WealthAI is a pre-built AI accelerator within the Xperion Marketplace. It transforms raw CDP segment data into synthetic wealth personas, then evaluates your creative across five dimensions — delivering resonance scores, rewrite suggestions, and qualitative reasoning in minutes, not weeks.
+            WealthAI is a pre-built AI accelerator within the Xperion Marketplace. It unifies customer, product, and behavioral signals to identify life-event intent, score next-best actions, and activate personalized banking and wealth experiences in real time.
           </p>
           <div style={{ display:"flex", gap:12 }}>
             <button className="hover-lift" style={{ padding:"11px 26px", borderRadius:10, border:"none", background:"#fff", color:X.t1, fontSize:13, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", gap:6 }}>Launch Studio <span style={{ fontSize:14 }}>&rarr;</span></button>
             <button className="hover-lift" style={{ padding:"11px 26px", borderRadius:10, border:"1px solid rgba(255,255,255,.3)", background:"rgba(255,255,255,.08)", color:"#fff", fontSize:13, fontWeight:600, cursor:"pointer", backdropFilter:"blur(6px)", display:"flex", alignItems:"center", gap:6 }}>Learn More <span style={{ fontSize:14 }}>&darr;</span></button>
           </div>
         </div>
-        {/* Resonance Heatmap Card */}
-        <div className="fu" style={{ animationDelay:".15s", width:320, background:"#fff", borderRadius:14, padding:"18px 20px", boxShadow:"0 8px 32px rgba(0,0,0,.18)", zIndex:1 }}>
-          <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:14 }}>
-            <span style={{ width:10, height:10, borderRadius:"50%", background:"#EF4444" }}/>
-            <span style={{ width:10, height:10, borderRadius:"50%", background:"#F59E0B" }}/>
-            <span style={{ width:10, height:10, borderRadius:"50%", background:"#10B981" }}/>
-          </div>
-          <div style={{ fontSize:10, fontWeight:700, color:X.t1, letterSpacing:".06em", marginBottom:10, textTransform:"uppercase" }}>Resonance Heatmap</div>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:6, marginBottom:14 }}>
-            {[8,7,5,3,6,9,7,5].map((v,i)=>(
-              <div key={i} style={{ height:34, borderRadius:8, background:v>=7?X.green+"20":v>=5?X.amber+"20":X.red+"20", display:"flex", alignItems:"center", justifyContent:"center", fontSize:15, fontWeight:700, color:v>=7?X.green:v>=5?X.amber:X.red }}>{v}</div>
-            ))}
-          </div>
-          <div style={{ background:X.coralB, borderRadius:8, padding:"8px 12px", marginBottom:10, borderLeft:"3px solid "+X.coral }}>
-            <div style={{ fontSize:9, fontWeight:700, color:X.coral, letterSpacing:".05em", textTransform:"uppercase", marginBottom:3 }}>First Reaction</div>
-            <div style={{ fontSize:11, color:X.t1, lineHeight:1.4, fontStyle:"italic" }}>"This feels authentic — I'd actually stop scrolling for this..."</div>
-          </div>
-          <div style={{ display:"flex", gap:8 }}>
-            <div style={{ flex:1, background:X.greenB, borderRadius:8, padding:"6px 10px" }}>
-              <div style={{ fontSize:8, fontWeight:700, color:X.green, letterSpacing:".05em", textTransform:"uppercase" }}>Works</div>
-              <div style={{ fontSize:10, color:X.t2, marginTop:2 }}>Transparent tone</div>
+
+        <div className="fu" style={{ animationDelay:".15s", width:336, background:"#fff", borderRadius:14, padding:"18px 20px", boxShadow:"0 8px 32px rgba(0,0,0,.18)", zIndex:1, display:"flex", flexDirection:"column", gap:12 }}>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+            <div>
+              <div style={{ fontSize:10, fontWeight:700, color:X.t1, letterSpacing:".06em", textTransform:"uppercase" }}>Relationship cockpit</div>
+              <div style={{ fontSize:12, color:X.t2, marginTop:2 }}>Next best action view</div>
             </div>
-            <div style={{ flex:1, background:X.redB, borderRadius:8, padding:"6px 10px" }}>
-              <div style={{ fontSize:8, fontWeight:700, color:X.red, letterSpacing:".05em", textTransform:"uppercase" }}>Doesn't</div>
-              <div style={{ fontSize:10, color:X.t2, marginTop:2 }}>Missing proof</div>
+            <Badge text="Live Profile" color={X.green} bg={X.greenB} />
+          </div>
+
+          <div style={{ background:X.surf, borderRadius:10, border:"1px solid "+X.bdr, padding:"12px 14px" }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:8 }}>
+              <div>
+                <div style={{ fontSize:13, fontWeight:700, color:X.t1 }}>Sarah Chen</div>
+                <div style={{ fontSize:10, color:X.t3 }}>Mass Affluent · Moderate Growth</div>
+              </div>
+              <div style={{ textAlign:"right" }}>
+                <div style={{ fontSize:10, color:X.t3 }}>AUM</div>
+                <div style={{ fontSize:14, fontWeight:800, color:X.coral, fontFamily:mono }}>$420K</div>
+              </div>
+            </div>
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8 }}>
+              <div style={{ background:X.blueB, borderRadius:8, padding:"8px 10px" }}>
+                <div style={{ fontSize:8, color:X.blue, fontWeight:700, textTransform:"uppercase" }}>Intent</div>
+                <div style={{ fontSize:11, color:X.t1, marginTop:3 }}>Investment-ready</div>
+              </div>
+              <div style={{ background:X.greenB, borderRadius:8, padding:"8px 10px" }}>
+                <div style={{ fontSize:8, color:X.green, fontWeight:700, textTransform:"uppercase" }}>Propensity</div>
+                <div style={{ fontSize:11, color:X.t1, marginTop:3 }}>84%</div>
+              </div>
+              <div style={{ background:X.purpleB, borderRadius:8, padding:"8px 10px" }}>
+                <div style={{ fontSize:8, color:X.purple, fontWeight:700, textTransform:"uppercase" }}>Life event</div>
+                <div style={{ fontSize:11, color:X.t1, marginTop:3 }}>Income uplift</div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ background:X.surf, borderRadius:10, border:"1px solid "+X.bdr, padding:"12px 14px" }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
+              <div style={{ fontSize:10, fontWeight:700, color:X.t1, letterSpacing:".05em", textTransform:"uppercase" }}>Recommended journey</div>
+              <span style={{ fontSize:10, color:X.green, fontWeight:700 }}>Ready to activate</span>
+            </div>
+            <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+              {[
+                ["1","Portfolio review invite", X.coral],
+                ["2","Adviser callback", X.blue],
+                ["3","Managed account offer", X.green],
+              ].map(([n,label,color]) => (
+                <div key={n} style={{ display:"flex", alignItems:"center", gap:10 }}>
+                  <div style={{ width:20, height:20, borderRadius:999, background:color+"18", color:color, display:"flex", alignItems:"center", justifyContent:"center", fontSize:10, fontWeight:700 }}>{n}</div>
+                  <div style={{ fontSize:11, color:X.t1 }}>{label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8 }}>
+            <div style={{ background:X.coralB, borderRadius:8, padding:"10px 12px" }}>
+              <div style={{ fontSize:8, color:X.coral, fontWeight:700, textTransform:"uppercase" }}>Expected lift</div>
+              <div style={{ fontSize:15, fontWeight:800, color:X.t1, marginTop:3 }}>+18%</div>
+              <div style={{ fontSize:10, color:X.t2 }}>Conversion potential</div>
+            </div>
+            <div style={{ background:X.amberB, borderRadius:8, padding:"10px 12px" }}>
+              <div style={{ fontSize:8, color:X.amber, fontWeight:700, textTransform:"uppercase" }}>Primary channels</div>
+              <div style={{ fontSize:15, fontWeight:800, color:X.t1, marginTop:3 }}>Email · RM</div>
+              <div style={{ fontSize:10, color:X.t2 }}>Web follow-up next</div>
             </div>
           </div>
         </div>
@@ -686,17 +703,14 @@ function App() {
   const [active, setActive] = useState(null);
   return (
     <div style={{ minHeight:"100vh", background:X.bg }}>
-      <Sidebar/>
-      <div style={{ marginLeft:56 }}>
-        <Header/>
-        <Hero/>
-        <KpiStrip/>
-        <ArchDiagram active={active} setActive={setActive}/>
-        <AboutSection/>
-        <OutcomesStrip/>
-        <DemoSection/>
-        <Footer/>
-      </div>
+      <Header/>
+      <Hero/>
+      <KpiStrip/>
+      <ArchDiagram active={active} setActive={setActive}/>
+      <AboutSection/>
+      <OutcomesStrip/>
+      <DemoSection/>
+      <Footer/>
     </div>
   );
 }
