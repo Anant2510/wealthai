@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=1440"/>
-<title>xPerion · WealthAI</title>
+<title>xPerion · FinNexus</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
@@ -227,7 +227,7 @@ function Header() {
       <div style={{ display:"flex", alignItems:"center", gap:14 }}>
         <XperionLogo height={24}/>
         <div style={{ width:1, height:22, background:X.bdr2 }}/>
-        <span style={{ fontSize:13, fontWeight:600, color:X.t1 }}>WealthAI</span>
+        <span style={{ fontSize:13, fontWeight:600, color:X.t1 }}>FinNexus</span>
         <span style={{ fontSize:10, color:X.t3 }}>&rsaquo;</span>
         <span style={{ fontSize:12, color:X.t2 }}>Industry Accelerator</span>
       </div>
@@ -245,13 +245,13 @@ function Hero() {
       <div style={{ display:"flex", gap:40, alignItems:"stretch" }}>
         <div style={{ flex:1, zIndex:1 }}>
           <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
-            <span style={{ fontSize:26, fontWeight:800, color:"#fff", letterSpacing:"-.02em" }}>WealthAI</span>
+            <span style={{ fontSize:26, fontWeight:800, color:"#fff", letterSpacing:"-.02em" }}>FinNexus</span>
             <Badge text="Accelerator" color="#fff" bg="rgba(255,255,255,.18)" style={{ fontSize:10.5, fontWeight:600 }}/>
           </div>
           <div style={{ fontSize:12, color:"rgba(255,255,255,.6)", marginBottom:20, letterSpacing:".04em" }}>Industry Accelerator · Banking & Wealth Management</div>
           <h1 style={{ fontSize:32, fontWeight:800, color:"#fff", lineHeight:1.2, marginBottom:18, maxWidth:540, letterSpacing:"-.02em" }}>AI-Powered Real-Time Personalization for Banking & Wealth</h1>
           <p style={{ fontSize:14, color:"rgba(255,255,255,.75)", lineHeight:1.7, maxWidth:520, marginBottom:28 }}>
-            WealthAI is a pre-built AI accelerator within the Xperion Marketplace. It unifies customer, product, and behavioral signals to identify life-event intent, score next-best actions, and activate personalized banking and wealth experiences in real time.
+            FinNexus is a pre-built AI accelerator within the Xperion Marketplace. It unifies customer, product, and behavioral signals to identify life-event intent, score next-best actions, and activate personalized banking and wealth experiences in real time.
           </p>
           <div style={{ display:"flex", gap:12 }}>
             <button className="hover-lift" style={{ padding:"11px 26px", borderRadius:10, border:"none", background:"#fff", color:X.t1, fontSize:13, fontWeight:700, cursor:"pointer", display:"flex", alignItems:"center", gap:6 }}>Launch Studio <span style={{ fontSize:14 }}>&rarr;</span></button>
@@ -362,7 +362,7 @@ function ArchDiagram({ active, setActive }) {
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
         <div>
           <div style={{ fontSize:9, fontWeight:700, color:X.coral, letterSpacing:".08em", textTransform:"uppercase", marginBottom:4 }}>Architecture</div>
-          <div style={{ fontSize:17, fontWeight:700, color:X.t1 }}>WealthAI Pipeline — {PIPELINE.length} Autonomous Agents</div>
+          <div style={{ fontSize:17, fontWeight:700, color:X.t1 }}>FinNexus Pipeline — {PIPELINE.length} Autonomous Agents</div>
         </div>
         {active!==null && <button onClick={()=>setActive(null)} style={{ fontSize:11, color:X.t3, background:"none", border:"1px solid "+X.bdr, borderRadius:8, padding:"4px 12px", cursor:"pointer" }}>Clear selection &times;</button>}
       </div>
@@ -436,8 +436,8 @@ function AboutSection() {
     <div className="fu" style={{ animationDelay:".2s", margin:"24px 24px 0", display:"grid", gridTemplateColumns:"1fr 1fr", gap:20 }}>
       <div style={{ background:X.card, borderRadius:18, border:"1px solid "+X.bdr, boxShadow:X.sh, padding:"28px 32px" }}>
         <div style={{ fontSize:9, fontWeight:700, color:X.coral, letterSpacing:".08em", textTransform:"uppercase", marginBottom:8 }}>About This Accelerator</div>
-        <div style={{ fontSize:17, fontWeight:700, color:X.t1, marginBottom:12 }}>What is WealthAI?</div>
-        <p style={{ fontSize:13, color:X.t2, lineHeight:1.7, marginBottom:14 }}>WealthAI is a pre-built AI accelerator within the <strong style={{ color:X.t1 }}>Xperion Marketplace</strong> — purpose-built for banking and wealth management teams to deliver real-time personalization at scale.</p>
+        <div style={{ fontSize:17, fontWeight:700, color:X.t1, marginBottom:12 }}>What is FinNexus?</div>
+        <p style={{ fontSize:13, color:X.t2, lineHeight:1.7, marginBottom:14 }}>FinNexus is a pre-built AI accelerator within the <strong style={{ color:X.t1 }}>Xperion Marketplace</strong> — purpose-built for banking and wealth management teams to deliver real-time personalization at scale.</p>
         <p style={{ fontSize:13, color:X.t2, lineHeight:1.7, marginBottom:14 }}>It transforms raw CDP segment data from <strong style={{ color:X.t1 }}>your customer data platform</strong> into synthetic wealth personas, then evaluates your creative across five dimensions — returning resonance scores, rewrite suggestions, and full qualitative reasoning per persona.</p>
         <p style={{ fontSize:13, color:X.t2, lineHeight:1.7 }}>From creative brief to predictive performance data in <strong style={{ color:X.t1 }}>minutes, not weeks</strong> — no focus groups, no production A/B tests needed.</p>
       </div>
@@ -515,7 +515,7 @@ function DemoSection() {
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20 }}>
         <div>
           <div style={{ fontSize:9, fontWeight:700, color:X.coral, letterSpacing:".08em", textTransform:"uppercase", marginBottom:4 }}>Interactive Demo</div>
-          <div style={{ fontSize:17, fontWeight:700, color:X.t1 }}>Experience WealthAI in Action</div>
+          <div style={{ fontSize:17, fontWeight:700, color:X.t1 }}>Experience FinNexus in Action</div>
         </div>
         {running!==null && <button onClick={resetDemo} style={{ fontSize:11, color:X.t3, background:"none", border:"1px solid "+X.bdr, borderRadius:8, padding:"5px 14px", cursor:"pointer" }}>&larr; Back to Use Cases</button>}
       </div>
@@ -616,7 +616,7 @@ function DemoSection() {
                 <div style={{ width:340, background:X.surf, borderRadius:16, padding:"14px 16px", border:"1px solid "+X.bdr, boxShadow:X.sh }}>
                   <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8 }}>
                     <div style={{ width:24, height:24, borderRadius:6, background:"linear-gradient(135deg,"+X.coral+","+X.orange+")", display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, color:"#fff" }}>W</div>
-                    <div style={{ fontSize:10, fontWeight:600, color:X.t2 }}>WealthAI &middot; Now</div>
+                    <div style={{ fontSize:10, fontWeight:600, color:X.t2 }}>FinNexus &middot; Now</div>
                   </div>
                   <div style={{ fontSize:12, fontWeight:700, color:X.t1, marginBottom:3 }}>{uc.offer.headline}</div>
                   <div style={{ fontSize:11, color:X.t2, lineHeight:1.4 }}>{uc.offer.action}</div>
@@ -689,7 +689,7 @@ function Footer() {
         <XperionLogo size={16}/>
         <div style={{ width:1, height:18, background:X.bdr2 }}/>
         <div>
-          <div style={{ fontSize:12, fontWeight:700, color:X.t1 }}>WealthAI</div>
+          <div style={{ fontSize:12, fontWeight:700, color:X.t1 }}>FinNexus</div>
           <div style={{ fontSize:10, color:X.t3 }}>AI-Powered Real-Time Personalization for Banking &amp; Wealth</div>
         </div>
       </div>
