@@ -193,7 +193,7 @@ const USE_CASES = [
     title:"Personal Banking — Credit Card Upsell",
     subtitle:"Identify high-spend retail customers ready for premium card upgrades based on spending patterns and lifestyle signals",
     icon:"\uD83D\uDCB3", color:X.blue, bg:X.blueB,
-    client:{ name:"Priya Sharma", tier:"Retail Premium", hub:"Mobile-First", monthlySpend:"$4,200", currentCard:"Gold", creditScore:"782", age:"31" },
+    client:{ name:"Michael Reynolds", tier:"Retail Premium", hub:"Mobile-First", monthlySpend:"$4,200", currentCard:"Gold", creditScore:"782", age:"31" },
     trigger:{ title:"Premium Card Upgrade Signal Detected", signals:[
       { s:"Card Transactions", e:"Monthly spend exceeded $4K for 3 consecutive months", sev:"high" },
       { s:"Behavioral Model", e:"Travel & dining category spend up 65% QoQ", sev:"critical" },
@@ -331,74 +331,152 @@ function Hero() {
           </div>
         </div>
 
-        <div className="fu" style={{ animationDelay:".15s", width:336, background:"#fff", borderRadius:14, padding:"18px 20px", boxShadow:"0 8px 32px rgba(0,0,0,.18)", zIndex:1, display:"flex", flexDirection:"column", gap:12 }}>
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-            <div>
-              <div style={{ fontSize:10, fontWeight:700, color:X.t1, letterSpacing:".06em", textTransform:"uppercase" }}>Relationship cockpit</div>
-              <div style={{ fontSize:12, color:X.t2, marginTop:2 }}>Next best action view</div>
-            </div>
-            <Badge text="Live Profile" color={X.green} bg={X.greenB} />
-          </div>
-
-          <div style={{ background:X.surf, borderRadius:10, border:"1px solid "+X.bdr, padding:"12px 14px" }}>
-            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:8 }}>
-              <div>
-                <div style={{ fontSize:13, fontWeight:700, color:X.t1 }}>Sarah Chen</div>
-                <div style={{ fontSize:10, color:X.t3 }}>Mass Affluent · Moderate Growth</div>
-              </div>
-              <div style={{ textAlign:"right" }}>
-                <div style={{ fontSize:10, color:X.t3 }}>AUM</div>
-                <div style={{ fontSize:14, fontWeight:800, color:X.coral, fontFamily:mono }}>$420K</div>
-              </div>
-            </div>
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8 }}>
-              <div style={{ background:X.blueB, borderRadius:8, padding:"8px 10px" }}>
-                <div style={{ fontSize:8, color:X.blue, fontWeight:700, textTransform:"uppercase" }}>Intent</div>
-                <div style={{ fontSize:11, color:X.t1, marginTop:3 }}>Investment-ready</div>
-              </div>
-              <div style={{ background:X.greenB, borderRadius:8, padding:"8px 10px" }}>
-                <div style={{ fontSize:8, color:X.green, fontWeight:700, textTransform:"uppercase" }}>Propensity</div>
-                <div style={{ fontSize:11, color:X.t1, marginTop:3 }}>84%</div>
-              </div>
-              <div style={{ background:X.purpleB, borderRadius:8, padding:"8px 10px" }}>
-                <div style={{ fontSize:8, color:X.purple, fontWeight:700, textTransform:"uppercase" }}>Life event</div>
-                <div style={{ fontSize:11, color:X.t1, marginTop:3 }}>Income uplift</div>
-              </div>
-            </div>
-          </div>
-
-          <div style={{ background:X.surf, borderRadius:10, border:"1px solid "+X.bdr, padding:"12px 14px" }}>
-            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
-              <div style={{ fontSize:10, fontWeight:700, color:X.t1, letterSpacing:".05em", textTransform:"uppercase" }}>Recommended journey</div>
-              <span style={{ fontSize:10, color:X.green, fontWeight:700 }}>Ready to activate</span>
-            </div>
-            <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
-              {[
-                ["1","Portfolio review invite", X.coral],
-                ["2","Adviser callback", X.blue],
-                ["3","Managed account offer", X.green],
-              ].map(([n,label,color]) => (
-                <div key={n} style={{ display:"flex", alignItems:"center", gap:10 }}>
-                  <div style={{ width:20, height:20, borderRadius:999, background:color+"18", color:color, display:"flex", alignItems:"center", justifyContent:"center", fontSize:10, fontWeight:700 }}>{n}</div>
-                  <div style={{ fontSize:11, color:X.t1 }}>{label}</div>
-                </div>
+        {/* Hero Card — Tabbed: Personal Banking + Business Banking */}
+        {(() => {
+          const [heroTab, setHeroTab] = React.useState("personal");
+          return (
+          <div className="fu" style={{ animationDelay:".15s", width:336, background:"#fff", borderRadius:14, padding:"18px 20px", boxShadow:"0 8px 32px rgba(0,0,0,.18)", zIndex:1, display:"flex", flexDirection:"column", gap:10 }}>
+            {/* Tab Switcher */}
+            <div style={{ display:"flex", gap:0, borderBottom:"1px solid "+X.bdr }}>
+              {[["personal","\uD83D\uDCB3 Personal Banking"],["business","\uD83C\uDFE2 Business Banking"]].map(([id,label])=>(
+                <button key={id} onClick={()=>setHeroTab(id)} style={{ flex:1, fontSize:10, fontWeight:heroTab===id?700:500, color:heroTab===id?X.coral:X.t3, background:"none", border:"none", borderBottom:heroTab===id?"2px solid "+X.coral:"2px solid transparent", padding:"6px 4px", cursor:"pointer", transition:"all .15s" }}>{label}</button>
               ))}
             </div>
-          </div>
 
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8 }}>
-            <div style={{ background:X.coralB, borderRadius:8, padding:"10px 12px" }}>
-              <div style={{ fontSize:8, color:X.coral, fontWeight:700, textTransform:"uppercase" }}>Expected lift</div>
-              <div style={{ fontSize:15, fontWeight:800, color:X.t1, marginTop:3 }}>+18%</div>
-              <div style={{ fontSize:10, color:X.t2 }}>Conversion potential</div>
-            </div>
-            <div style={{ background:X.amberB, borderRadius:8, padding:"10px 12px" }}>
-              <div style={{ fontSize:8, color:X.amber, fontWeight:700, textTransform:"uppercase" }}>Primary channels</div>
-              <div style={{ fontSize:15, fontWeight:800, color:X.t1, marginTop:3 }}>Email · RM</div>
-              <div style={{ fontSize:10, color:X.t2 }}>Web follow-up next</div>
-            </div>
+            {/* Personal Banking Tab */}
+            {heroTab==="personal" && (<>
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+                <div>
+                  <div style={{ fontSize:10, fontWeight:700, color:X.t1, letterSpacing:".06em", textTransform:"uppercase" }}>Credit Card Intelligence</div>
+                  <div style={{ fontSize:11, color:X.t2, marginTop:2 }}>Next best action view</div>
+                </div>
+                <Badge text="Live Profile" color={X.green} bg={X.greenB} />
+              </div>
+
+              <div style={{ background:X.surf, borderRadius:10, border:"1px solid "+X.bdr, padding:"10px 12px" }}>
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:6 }}>
+                  <div>
+                    <div style={{ fontSize:12, fontWeight:700, color:X.t1 }}>Michael Reynolds</div>
+                    <div style={{ fontSize:9.5, color:X.t3 }}>Retail Premium · Gold Card</div>
+                  </div>
+                  <div style={{ textAlign:"right" }}>
+                    <div style={{ fontSize:9, color:X.t3 }}>Monthly Spend</div>
+                    <div style={{ fontSize:14, fontWeight:800, color:X.blue, fontFamily:mono }}>$4,200</div>
+                  </div>
+                </div>
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:6 }}>
+                  <div style={{ background:X.blueB, borderRadius:7, padding:"6px 8px" }}>
+                    <div style={{ fontSize:7.5, color:X.blue, fontWeight:700, textTransform:"uppercase" }}>Intent</div>
+                    <div style={{ fontSize:10, color:X.t1, marginTop:2 }}>Platinum upgrade</div>
+                  </div>
+                  <div style={{ background:X.greenB, borderRadius:7, padding:"6px 8px" }}>
+                    <div style={{ fontSize:7.5, color:X.green, fontWeight:700, textTransform:"uppercase" }}>Propensity</div>
+                    <div style={{ fontSize:10, color:X.t1, marginTop:2 }}>78%</div>
+                  </div>
+                  <div style={{ background:X.purpleB, borderRadius:7, padding:"6px 8px" }}>
+                    <div style={{ fontSize:7.5, color:X.purple, fontWeight:700, textTransform:"uppercase" }}>Credit Score</div>
+                    <div style={{ fontSize:10, color:X.t1, marginTop:2 }}>782</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ background:X.surf, borderRadius:10, border:"1px solid "+X.bdr, padding:"10px 12px" }}>
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
+                  <div style={{ fontSize:9.5, fontWeight:700, color:X.t1, letterSpacing:".05em", textTransform:"uppercase" }}>Recommended Journey</div>
+                  <span style={{ fontSize:9.5, color:X.green, fontWeight:700 }}>Ready to activate</span>
+                </div>
+                <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+                  {[["1","Platinum upgrade push notification", X.blue],["2","In-app benefits comparison", X.purple],["3","Fee waiver + bonus points offer", X.green]].map(([n,label,color]) => (
+                    <div key={n} style={{ display:"flex", alignItems:"center", gap:8 }}>
+                      <div style={{ width:18, height:18, borderRadius:999, background:color+"18", color:color, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, fontWeight:700 }}>{n}</div>
+                      <div style={{ fontSize:10, color:X.t1 }}>{label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6 }}>
+                <div style={{ background:X.blueB, borderRadius:7, padding:"8px 10px" }}>
+                  <div style={{ fontSize:7.5, color:X.blue, fontWeight:700, textTransform:"uppercase" }}>Expected Lift</div>
+                  <div style={{ fontSize:14, fontWeight:800, color:X.t1, marginTop:2 }}>+20%</div>
+                  <div style={{ fontSize:9, color:X.t2 }}>Upgrade conversion</div>
+                </div>
+                <div style={{ background:X.amberB, borderRadius:7, padding:"8px 10px" }}>
+                  <div style={{ fontSize:7.5, color:X.amber, fontWeight:700, textTransform:"uppercase" }}>Primary Channels</div>
+                  <div style={{ fontSize:14, fontWeight:800, color:X.t1, marginTop:2 }}>Push · App</div>
+                  <div style={{ fontSize:9, color:X.t2 }}>Email follow-up</div>
+                </div>
+              </div>
+            </>)}
+
+            {/* Business Banking Tab */}
+            {heroTab==="business" && (<>
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+                <div>
+                  <div style={{ fontSize:10, fontWeight:700, color:X.t1, letterSpacing:".06em", textTransform:"uppercase" }}>SME Lending Intelligence</div>
+                  <div style={{ fontSize:11, color:X.t2, marginTop:2 }}>Growth opportunity view</div>
+                </div>
+                <Badge text="Pre-Approved" color={X.purple} bg={X.purpleB} />
+              </div>
+
+              <div style={{ background:X.surf, borderRadius:10, border:"1px solid "+X.bdr, padding:"10px 12px" }}>
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:6 }}>
+                  <div>
+                    <div style={{ fontSize:12, fontWeight:700, color:X.t1 }}>Meridian Tech Solutions</div>
+                    <div style={{ fontSize:9.5, color:X.t3 }}>SME Growth · 4 yrs with bank</div>
+                  </div>
+                  <div style={{ textAlign:"right" }}>
+                    <div style={{ fontSize:9, color:X.t3 }}>Revenue</div>
+                    <div style={{ fontSize:14, fontWeight:800, color:X.purple, fontFamily:mono }}>$2.8M</div>
+                  </div>
+                </div>
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:6 }}>
+                  <div style={{ background:X.purpleB, borderRadius:7, padding:"6px 8px" }}>
+                    <div style={{ fontSize:7.5, color:X.purple, fontWeight:700, textTransform:"uppercase" }}>Signal</div>
+                    <div style={{ fontSize:10, color:X.t1, marginTop:2 }}>Expansion</div>
+                  </div>
+                  <div style={{ background:X.greenB, borderRadius:7, padding:"6px 8px" }}>
+                    <div style={{ fontSize:7.5, color:X.green, fontWeight:700, textTransform:"uppercase" }}>Propensity</div>
+                    <div style={{ fontSize:10, color:X.t1, marginTop:2 }}>82%</div>
+                  </div>
+                  <div style={{ background:X.amberB, borderRadius:7, padding:"6px 8px" }}>
+                    <div style={{ fontSize:7.5, color:X.amber, fontWeight:700, textTransform:"uppercase" }}>Credit</div>
+                    <div style={{ fontSize:10, color:X.t1, marginTop:2 }}>A-</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ background:X.surf, borderRadius:10, border:"1px solid "+X.bdr, padding:"10px 12px" }}>
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
+                  <div style={{ fontSize:9.5, fontWeight:700, color:X.t1, letterSpacing:".05em", textTransform:"uppercase" }}>Recommended Journey</div>
+                  <span style={{ fontSize:9.5, color:X.green, fontWeight:700 }}>Pre-approved</span>
+                </div>
+                <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+                  {[["1","RM outreach with lending proposal", X.purple],["2","Business portal pre-approved offer", X.blue],["3","Cash flow matched repayment plan", X.green]].map(([n,label,color]) => (
+                    <div key={n} style={{ display:"flex", alignItems:"center", gap:8 }}>
+                      <div style={{ width:18, height:18, borderRadius:999, background:color+"18", color:color, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, fontWeight:700 }}>{n}</div>
+                      <div style={{ fontSize:10, color:X.t1 }}>{label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6 }}>
+                <div style={{ background:X.purpleB, borderRadius:7, padding:"8px 10px" }}>
+                  <div style={{ fontSize:7.5, color:X.purple, fontWeight:700, textTransform:"uppercase" }}>Pre-Approved</div>
+                  <div style={{ fontSize:14, fontWeight:800, color:X.t1, marginTop:2 }}>$500K</div>
+                  <div style={{ fontSize:9, color:X.t2 }}>Term loan limit</div>
+                </div>
+                <div style={{ background:X.amberB, borderRadius:7, padding:"8px 10px" }}>
+                  <div style={{ fontSize:7.5, color:X.amber, fontWeight:700, textTransform:"uppercase" }}>Primary Channels</div>
+                  <div style={{ fontSize:14, fontWeight:800, color:X.t1, marginTop:2 }}>RM · Portal</div>
+                  <div style={{ fontSize:9, color:X.t2 }}>Email follow-up</div>
+                </div>
+              </div>
+            </>)}
           </div>
-        </div>
+          );
+        })()}
       </div>
     </section>
   );
