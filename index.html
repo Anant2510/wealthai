@@ -188,6 +188,78 @@ const USE_CASES = [
       { t:"Track retention outcome and optimize intervention model", d:{ churnReduced:"72% to 18%", aumRetained:"$2.1M", advisorFeedback:"Positive", modelUpdate:"Scheduled" }},
     ]
   },
+  {
+    id:"credit-card-upsell",
+    title:"Personal Banking — Credit Card Upsell",
+    subtitle:"Identify high-spend retail customers ready for premium card upgrades based on spending patterns and lifestyle signals",
+    icon:"\uD83D\uDCB3", color:X.blue, bg:X.blueB,
+    client:{ name:"Priya Sharma", tier:"Retail Premium", hub:"Mobile-First", monthlySpend:"$4,200", currentCard:"Gold", creditScore:"782", age:"31" },
+    trigger:{ title:"Premium Card Upgrade Signal Detected", signals:[
+      { s:"Card Transactions", e:"Monthly spend exceeded $4K for 3 consecutive months", sev:"high" },
+      { s:"Behavioral Model", e:"Travel & dining category spend up 65% QoQ", sev:"critical" },
+      { s:"Digital Banking", e:"Browsed Platinum card benefits page 4 times this week", sev:"medium" },
+    ]},
+    offer:{ headline:"Unlock Platinum Privileges", action:"Upgrade to Platinum with complimentary airport lounge access, 3x rewards on travel & dining, and zero foreign transaction fees", cta:"Upgrade Now", benefit:"Annual fee waived for first year + 50K bonus points" },
+    result:{ before:"8%", after:"28%", metric:"upgrade conversion" },
+    steps:[
+      { t:"Ingest transaction data from card processor and digital banking", d:{ source:"Card Processor + App + Web", records:"36 months txn history", latency:"<100ms", schema:"Card-360" }},
+      { t:"Build spending pattern schema and lifestyle segmentation", d:{ segment:"Retail Premium", spendCategory:"Travel + Dining Heavy", lifestyleCluster:"Urban Professional", velocity:"+12% MoM" }},
+      { t:"Resolve identity across card, mobile app, and web sessions", d:{ matchedIDs:3, channels:"Card + App + Web", confidence:"98.1%", idGraph:"Unified" }},
+      { t:"Score upgrade propensity and lifetime value projection", d:{ upgradePropensity:"0.78", projectedLTV:"$12,400/yr", revenueUplift:"+$3,200/yr", model:"CardUpgrade-v2" }},
+      { t:"Generate micro-segment: Premium-Ready High Spender", d:{ microSegment:"Premium-Ready", subCluster:"Travel Enthusiast", personaMatch:"94%", journeyType:"Upgrade Path" }},
+      { t:"Create personalized upgrade content with dynamic benefits", d:{ variants:3, tone:"Aspirational + Exclusive", compliance:"Pre-cleared", format:"Push + Email + In-App" }},
+      { t:"Activate across mobile push, in-app banner, email, and SMS", d:{ channels:4, timing:"Post high-spend transaction", priority:"High", abTest:"3-variant" }},
+      { t:"Measure upgrade rate and track incremental card revenue", d:{ upgradeRate:"28%", revenuePerUpgrade:"+$3,200/yr", costPerAcquisition:"-35%", nextAction:"Expand to Gold tier" }},
+    ]
+  },
+  {
+    id:"business-lending",
+    title:"Business Banking — Smart Lending",
+    subtitle:"Proactively offer tailored lending products to SME clients showing growth signals and financing readiness",
+    icon:"\uD83C\uDFE2", color:X.purple, bg:X.purpleB,
+    client:{ name:"Meridian Tech Solutions", tier:"SME Growth", hub:"Relationship + Digital", annualRevenue:"$2.8M", existingProducts:"Current A/C, Overdraft", creditRating:"A-", yearsWithBank:"4" },
+    trigger:{ title:"Lending Opportunity — Growth SME Detected", signals:[
+      { s:"Transaction Analysis", e:"Monthly deposits up 40% over last quarter", sev:"critical" },
+      { s:"Account Behavior", e:"Overdraft utilization hit 85% three times in 60 days", sev:"high" },
+      { s:"External Data", e:"Company filed new office lease — expansion signal", sev:"medium" },
+    ]},
+    offer:{ headline:"Fuel Your Next Phase of Growth", action:"Pre-approved business term loan up to $500K at preferential rates with flexible repayment matched to your cash flow cycle", cta:"View Pre-Approved Offer", benefit:"0.5% rate discount + no arrangement fee" },
+    result:{ before:"5%", after:"22%", metric:"lending conversion" },
+    steps:[
+      { t:"Ingest business account transactions, overdraft, and external signals", d:{ source:"Business A/C + Overdraft + Bureau", records:"4 years history", latency:"Batch + Real-time", schema:"SME-360" }},
+      { t:"Build cash flow model and business health scoring", d:{ segment:"SME Growth", revenueTrajectory:"+40% QoQ", cashFlowHealth:"Strong", seasonalPattern:"Q4 peak" }},
+      { t:"Stitch entity identity across business accounts and directors", d:{ matchedEntities:3, accounts:"Current + Overdraft + Director", confidence:"96.8%", entityGraph:"Unified" }},
+      { t:"Score lending propensity and pre-approve credit limit", d:{ lendingPropensity:"0.82", preApprovedLimit:"$500K", defaultRisk:"2.1%", model:"SMELending-v3" }},
+      { t:"Assign to Business Growth lending journey", d:{ microSegment:"Growth SME", subCluster:"Expansion Phase", journeyType:"Pre-Approved Lending", urgency:"High" }},
+      { t:"Generate personalized lending proposal with cash flow projections", d:{ variants:2, tone:"Professional + Partnership", compliance:"Credit committee cleared", format:"RM Brief + Email + Portal" }},
+      { t:"Activate via relationship manager, email, and business portal", d:{ channels:3, rmNotified:true, portalOffer:"Published", emailScheduled:"Next business day" }},
+      { t:"Track lending uptake, disbursement, and portfolio impact", d:{ conversionRate:"22%", avgLoanSize:"$380K", portfolioGrowth:"+$4.2M", npaRate:"0.8%" }},
+    ]
+  },
+  {
+    id:"commercial-treasury",
+    title:"Commercial Banking — Treasury Optimization",
+    subtitle:"Identify large corporates with idle liquidity and offer AI-optimized treasury and cash management solutions",
+    icon:"\uD83C\uDFE6", color:X.amber, bg:X.amberB,
+    client:{ name:"GlobalTrade Industries", tier:"Large Corporate", hub:"RM-Led + Digital", annualTurnover:"$180M", currentProducts:"OpEx A/C, Trade Finance, FX", treasuryBalance:"$12.4M idle", cfoBanking:"Multi-banked" },
+    trigger:{ title:"Treasury Optimization — Idle Liquidity Detected", signals:[
+      { s:"Account Analytics", e:"$12.4M average idle balance across 3 operating accounts", sev:"critical" },
+      { s:"Transaction Pattern", e:"FX conversion volume up 120% — international expansion", sev:"high" },
+      { s:"Market Intelligence", e:"Competitor offering treasury management RFP to client", sev:"critical" },
+    ]},
+    offer:{ headline:"Maximize Every Dollar of Working Capital", action:"AI-optimized liquidity management with automated cash pooling, overnight sweep, and dynamic FX hedging — projected to unlock $1.2M in annual yield", cta:"Schedule Treasury Review", benefit:"$1.2M projected annual yield + dedicated treasury desk" },
+    result:{ before:"$180K", after:"$1.2M", metric:"annual treasury yield" },
+    steps:[
+      { t:"Ingest corporate account balances, FX flows, and trade finance data", d:{ source:"OpEx Accounts + Trade Finance + FX + SWIFT", records:"Multi-entity consolidated", latency:"Real-time", schema:"Corporate-360" }},
+      { t:"Build liquidity model and cash flow forecasting engine", d:{ segment:"Large Corporate", idleLiquidity:"$12.4M avg", cashFlowCycle:"45-day receivables", fxExposure:"$8.2M monthly" }},
+      { t:"Stitch entity identity across subsidiaries and operating accounts", d:{ matchedEntities:7, subsidiaries:4, countries:3, confidence:"99.1%", entityGraph:"Corporate Hierarchy" }},
+      { t:"Score treasury optimization potential and product fit", d:{ optimizationPotential:"$1.2M/yr", productFit:"Cash Pooling + Sweep + FX Hedging", walletShareOpportunity:"+35%", model:"TreasuryOpt-v2" }},
+      { t:"Assign to Commercial Treasury optimization journey", d:{ microSegment:"Idle Liquidity Corporate", subCluster:"International Expansion", journeyType:"Treasury Deepening", competitorRisk:"High" }},
+      { t:"Generate bespoke treasury proposal with projected yield analysis", d:{ variants:1, tone:"Strategic + Data-Driven", compliance:"Treasury committee approved", format:"RM Deck + CFO Email + Portal" }},
+      { t:"Activate via senior RM, CFO email, and executive briefing", d:{ channels:3, seniorRMBriefed:true, cfoEmailScheduled:"Priority", executiveBriefing:"Requested" }},
+      { t:"Track treasury product uptake and wallet share expansion", d:{ yieldDelivered:"$1.2M/yr", productsAdopted:3, walletShareGain:"+35%", clientSatisfaction:"NPS 72" }},
+    ]
+  },
 ];
 
 /* ═══════════════════ REUSABLE COMPONENTS ═══════════════════ */
@@ -248,8 +320,8 @@ function Hero() {
             <span style={{ fontSize:26, fontWeight:800, color:"#fff", letterSpacing:"-.02em" }}>FinNexus</span>
             <Badge text="Accelerator" color="#fff" bg="rgba(255,255,255,.18)" style={{ fontSize:10.5, fontWeight:600 }}/>
           </div>
-          <div style={{ fontSize:12, color:"rgba(255,255,255,.6)", marginBottom:20, letterSpacing:".04em" }}>Industry Accelerator · Banking & Wealth Management</div>
-          <h1 style={{ fontSize:32, fontWeight:800, color:"#fff", lineHeight:1.2, marginBottom:18, maxWidth:540, letterSpacing:"-.02em" }}>AI-Powered Real-Time Personalization for Banking & Wealth</h1>
+          <div style={{ fontSize:12, color:"rgba(255,255,255,.6)", marginBottom:20, letterSpacing:".04em" }}>Industry Accelerator · Financial Services</div>
+          <h1 style={{ fontSize:32, fontWeight:800, color:"#fff", lineHeight:1.2, marginBottom:18, maxWidth:540, letterSpacing:"-.02em" }}>An AI Accelerator Enabling Intelligent Engagement, Insights & Personalization for Financial Services</h1>
           <p style={{ fontSize:14, color:"rgba(255,255,255,.75)", lineHeight:1.7, maxWidth:520, marginBottom:28 }}>
             FinNexus is a pre-built AI accelerator within the Xperion Marketplace. It unifies customer, product, and behavioral signals to identify life-event intent, score next-best actions, and activate personalized banking and wealth experiences in real time.
           </p>
@@ -443,7 +515,7 @@ function AboutSection() {
       </div>
       <div style={{ background:X.card, borderRadius:18, border:"1px solid "+X.bdr, boxShadow:X.sh, padding:"28px 32px" }}>
         <div style={{ fontSize:9, fontWeight:700, color:X.coral, letterSpacing:".08em", textTransform:"uppercase", marginBottom:8 }}>Industry Use Cases</div>
-        <div style={{ fontSize:17, fontWeight:700, color:X.t1, marginBottom:16 }}>Built for Banking &amp; Wealth</div>
+        <div style={{ fontSize:17, fontWeight:700, color:X.t1, marginBottom:16 }}>Built for Financial Services</div>
         {[
           { icon:"\uD83C\uDFE6", title:"Wealth Management", desc:"Test investment product messaging against wealth segments — Mass Affluent, HNWI, Ultra-HNWI, Near-Retirees." },
           { icon:"\uD83D\uDCB3", title:"Retail Banking", desc:"Evaluate credit card, loan, and savings campaigns across income tiers and life-stage segments." },
@@ -521,25 +593,52 @@ function DemoSection() {
       </div>
 
       {running===null && (
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 }}>
-          {USE_CASES.map((u,i)=>(
-            <div key={u.id} className="hover-lift" style={{ border:"1px solid "+X.bdr, borderRadius:14, padding:"22px 24px", cursor:"pointer", background:X.card, transition:"border-color .2s" }}
-              onMouseEnter={e=>e.currentTarget.style.borderColor=u.color} onMouseLeave={e=>e.currentTarget.style.borderColor=X.bdr}>
-              <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10 }}>
-                <div style={{ width:38, height:38, borderRadius:10, background:u.bg, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 }}>{u.icon}</div>
-                <div>
-                  <div style={{ fontSize:14, fontWeight:700, color:X.t1 }}>{u.title}</div>
-                  <div style={{ fontSize:11, color:X.t2, lineHeight:1.4, marginTop:2 }}>{u.subtitle}</div>
+        <div>
+          {/* Category: Wealth Management */}
+          <div style={{ fontSize:10, fontWeight:700, color:X.coral, letterSpacing:".06em", textTransform:"uppercase", marginBottom:10 }}>Wealth Management</div>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:20 }}>
+            {USE_CASES.slice(0,2).map((u,i)=>{
+              const badges = [u.client.tier, u.client.aum?"AUM: "+u.client.aum:null, u.client.riskProfile].filter(Boolean);
+              return (
+              <div key={u.id} className="hover-lift" style={{ border:"1px solid "+X.bdr, borderRadius:14, padding:"18px 20px", cursor:"pointer", background:X.card, transition:"border-color .2s" }}
+                onMouseEnter={e=>e.currentTarget.style.borderColor=u.color} onMouseLeave={e=>e.currentTarget.style.borderColor=X.bdr}>
+                <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:8 }}>
+                  <div style={{ width:36, height:36, borderRadius:10, background:u.bg, display:"flex", alignItems:"center", justifyContent:"center", fontSize:18 }}>{u.icon}</div>
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontSize:13, fontWeight:700, color:X.t1 }}>{u.title}</div>
+                    <div style={{ fontSize:10, color:X.t2, lineHeight:1.3, marginTop:2 }}>{u.subtitle}</div>
+                  </div>
                 </div>
+                <div style={{ display:"flex", gap:5, marginBottom:12, flexWrap:"wrap" }}>
+                  {badges.map((b,bi)=><Badge key={bi} text={b} color={bi===0?u.color:X.t2} bg={bi===0?undefined:X.surf}/>)}
+                </div>
+                <button onClick={()=>runDemo(i)} style={{ width:"100%", padding:"8px", borderRadius:10, border:"none", background:u.color, color:"#fff", fontSize:11, fontWeight:700, cursor:"pointer" }}>Launch Demo &rarr;</button>
               </div>
-              <div style={{ display:"flex", gap:6, marginBottom:14, flexWrap:"wrap" }}>
-                <Badge text={u.client.tier} color={u.color}/>
-                <Badge text={"AUM: "+u.client.aum} color={X.t1} bg={X.surf}/>
-                <Badge text={u.client.riskProfile} color={X.t2} bg={X.surf}/>
+            );})}
+          </div>
+          {/* Category: Personal · Business · Commercial Banking */}
+          <div style={{ fontSize:10, fontWeight:700, color:X.coral, letterSpacing:".06em", textTransform:"uppercase", marginBottom:10 }}>Personal Banking · Business Banking · Commercial Banking</div>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:14 }}>
+            {USE_CASES.slice(2).map((u,i)=>{
+              const idx = i+2;
+              const badges = [u.client.tier, u.client.monthlySpend?"Spend: "+u.client.monthlySpend:null, u.client.annualRevenue?"Rev: "+u.client.annualRevenue:null, u.client.annualTurnover?"Turnover: "+u.client.annualTurnover:null, u.client.creditScore?"Score: "+u.client.creditScore:null, u.client.creditRating||null].filter(Boolean);
+              return (
+              <div key={u.id} className="hover-lift" style={{ border:"1px solid "+X.bdr, borderRadius:14, padding:"18px 20px", cursor:"pointer", background:X.card, transition:"border-color .2s" }}
+                onMouseEnter={e=>e.currentTarget.style.borderColor=u.color} onMouseLeave={e=>e.currentTarget.style.borderColor=X.bdr}>
+                <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:8 }}>
+                  <div style={{ width:36, height:36, borderRadius:10, background:u.bg, display:"flex", alignItems:"center", justifyContent:"center", fontSize:18 }}>{u.icon}</div>
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontSize:13, fontWeight:700, color:X.t1 }}>{u.title}</div>
+                  </div>
+                </div>
+                <div style={{ fontSize:10, color:X.t2, lineHeight:1.3, marginBottom:8 }}>{u.subtitle}</div>
+                <div style={{ display:"flex", gap:5, marginBottom:12, flexWrap:"wrap" }}>
+                  {badges.slice(0,3).map((b,bi)=><Badge key={bi} text={b} color={bi===0?u.color:X.t2} bg={bi===0?undefined:X.surf} style={{ fontSize:9 }}/>)}
+                </div>
+                <button onClick={()=>runDemo(idx)} style={{ width:"100%", padding:"8px", borderRadius:10, border:"none", background:u.color, color:"#fff", fontSize:11, fontWeight:700, cursor:"pointer" }}>Launch Demo &rarr;</button>
               </div>
-              <button onClick={()=>runDemo(i)} style={{ width:"100%", padding:"9px", borderRadius:10, border:"none", background:u.color, color:"#fff", fontSize:12, fontWeight:700, cursor:"pointer", letterSpacing:".02em" }}>Launch Demo &rarr;</button>
-            </div>
-          ))}
+            );})}
+          </div>
         </div>
       )}
 
@@ -690,7 +789,7 @@ function Footer() {
         <div style={{ width:1, height:18, background:X.bdr2 }}/>
         <div>
           <div style={{ fontSize:12, fontWeight:700, color:X.t1 }}>FinNexus</div>
-          <div style={{ fontSize:10, color:X.t3 }}>AI-Powered Real-Time Personalization for Banking &amp; Wealth</div>
+          <div style={{ fontSize:10, color:X.t3 }}>An AI Accelerator Enabling Intelligent Engagement, Insights &amp; Personalization for Financial Services</div>
         </div>
       </div>
       <div style={{ fontSize:10, color:X.t3 }}>&copy; 2026 Coforge &middot; xPerion Marketplace &middot; All rights reserved</div>
